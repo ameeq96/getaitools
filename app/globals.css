@@ -14,3 +14,5 @@
 @media(max-width:900px){.product-title-row{flex-direction:row}.product-content>p{font-size:12px;min-height:63px}.product-title-row h3{font-size:23px}.maker{font-size:9px}.details-link{font-size:11px}.product-category{font-size:8px}.product-tag{font-size:7px}.visual-caption{font-size:7px}}
 @media(max-width:650px){.product-title-row{flex-direction:column}.product-title-row h3{font-size:21px}.maker{font-size:8px}.product-category{font-size:7px;letter-spacing:.6px}.product-content>p{font-size:11px;line-height:1.75;min-height:96px}.details-link{font-size:10px;gap:5px}.product-tag{font-size:5.5px}.visual-caption{font-size:5px}.category{font-size:10px}.results-bar,.sort-control select{font-size:9px}.catalog-footnote{font-size:8px}.why-features p,.step p,.faq-item p{font-size:12px}}
 @media(max-width:370px){.product-title-row h3{font-size:19px}.product-content{padding-inline:10px}.product-content>p{font-size:11px;min-height:116px}.details-link{font-size:9px;gap:4px}.product-tag{font-size:5px}.product-category{font-size:6.5px}.catalog-footnote{font-size:7px}}
+
+@media(max-width:650px){.why-asterisk{right:22px}}
