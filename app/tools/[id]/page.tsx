@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight, ArrowUpRight, Check, ChevronRight, Layers3, ShoppingBag, Sparkles } from "lucide-react";
 import { tools, ToolLogo } from "../../catalog";
 import ToolActions from "./tool-actions";
+import BusinessLinks from "../../business-links";
 
 type ToolPageProps = { params: Promise<{ id: string }> };
 
@@ -94,6 +95,6 @@ export default async function ToolPage({ params }: ToolPageProps) {
       {relatedTools.length > 0 && <section className="tool-related wrap" aria-labelledby="related-title"><div className="section-heading"><div><div className="eyebrow section-eyebrow"><span className="section-line" /> GOOD COMPANY FOR YOUR TOOLKIT</div><h2 id="related-title">Keep the ideas <span>coming.</span></h2></div><Link className="text-link" href="/#tools">Explore the collection <ArrowUpRight size={16} /></Link></div><div className="tool-related-grid">{relatedTools.map((related) => <Link className="tool-related-card" href={`/tools/${related.id}`} key={related.id} style={{ "--tool-accent": related.accent } as CSSProperties}><span className={`tool-related-icon product-${related.id}`}><ToolLogo id={related.id} /></span><span className="tool-related-copy"><span className="tool-related-category">{related.category}</span><h3>{related.name}</h3><p>{related.shortDescription}</p></span><ArrowUpRight size={18} /></Link>)}</div></section>}
     </main>
 
-    <footer className="footer wrap"><div className="footer-main"><div><Link className="brand-link" href="/" aria-label="GetAI Tools home"><Brand /></Link><p>A little AI. A lot more possible.</p></div><div className="footer-links"><Link href="/#tools">The collection</Link><Link href="/about">About</Link><Link href="/how-it-works">How it works</Link><Link href="/faqs">FAQs</Link><Link href="/contact">Contact</Link><Link href="/toolkit">Your toolkit <ArrowUpRight size={13} /></Link></div><a className="back-top" href="#tool-title" aria-label="Back to tool overview"><ArrowUpRight size={21} /></a></div><div className="footer-bottom"><span>© {new Date().getFullYear()} GetAI Tools</span><span>Independent storefront. Product names and marks belong to their respective owners.</span><span>Made for what’s next. <Sparkles size={12} /></span></div></footer>
+    <footer className="footer wrap"><div className="footer-main"><div><Link className="brand-link" href="/" aria-label="GetAI Tools home"><Brand /></Link><p>A little AI. A lot more possible.</p></div><div className="footer-links"><Link href="/#tools">The collection</Link><Link href="/about">About</Link><Link href="/how-it-works">How it works</Link><Link href="/faqs">FAQs</Link><Link href="/contact">Contact</Link><Link href="/toolkit">Your toolkit <ArrowUpRight size={13} /></Link></div><a className="back-top" href="#tool-title" aria-label="Back to tool overview"><ArrowUpRight size={21} /></a></div><BusinessLinks /><div className="footer-bottom"><span>© {new Date().getFullYear()} GetAI Tools</span><span>Independent storefront. Product names and marks belong to their respective owners.</span><span>Made for what’s next. <Sparkles size={12} /></span></div></footer>
   </>;
 }

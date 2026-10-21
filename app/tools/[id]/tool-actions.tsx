@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { ArrowRight, Check, Plus } from "lucide-react";
 import { tools, type ToolId } from "../../catalog";
+import { emailInquiryUrl, whatsappUrl } from "../../business";
 
 const toolkitKey = "getaitools-toolkit";
 const toolIds = new Set<string>(tools.map((tool) => tool.id));
@@ -20,6 +21,7 @@ export default function ToolActions({ id, name }: { id: ToolId; name: string }) 
   const [restored, setRestored] = useState(false);
   const [message, setMessage] = useState("");
   const [storageError, setStorageError] = useState(false);
+  const inquiry = `Hi GetAI Tools! I'm interested in ${name}. Please confirm available plans, duration, final pricing in USD, access method, activation estimate, renewal, support, and refund/cancellation terms before payment.\n\nFrom https://getaitools.shop/tools/${id}`;
 
   useEffect(() => {
     setMessage("");
@@ -50,10 +52,12 @@ export default function ToolActions({ id, name }: { id: ToolId; name: string }) 
   }
 
   return <div className="tool-actions">
+    <a className="button button-primary" href={whatsappUrl(inquiry)} target="_blank" rel="noopener noreferrer">Ask on WhatsApp <ArrowRight size={17} /></a>
     <button className="button button-primary" onClick={addTool} disabled={!restored || added} aria-label={added ? `${name} is in your toolkit` : `Add ${name} to toolkit`}>
       {added ? <><Check size={17} /> In your toolkit</> : <>Add to your toolkit <Plus size={17} /></>}
     </button>
     <Link className="detail-basket-link" href="/toolkit">View your toolkit <ArrowRight size={14} /></Link>
+    <a className="detail-basket-link" href={emailInquiryUrl(`${name} plans & pricing inquiry`, inquiry)}>Ask by email <ArrowRight size={14} /></a>
     <p className="tool-actions-status" role="status" aria-live="polite">{message}</p>
     {storageError && <p className="tool-actions-error" role="alert">Browser storage is unavailable, so this tool could not be saved here. Open your toolkit in the catalog to continue.</p>}
   </div>;

@@ -4,6 +4,7 @@ import { useEffect, useState, type CSSProperties } from "react";
 import Link from "next/link";
 import { ArrowRight, ArrowUpRight, CheckCheck, ChevronDown, ChevronRight, Copy, Download, Plus, ShoppingBag, Sparkles, X } from "lucide-react";
 import { tools, ToolLogo, type ToolId } from "../../catalog";
+import { emailInquiryUrl, whatsappUrl } from "../../business";
 
 const toolkitKey = "getaitools-toolkit";
 const toolIds = new Set<string>(tools.map((tool) => tool.id));
@@ -41,7 +42,7 @@ export default function ToolkitContent() {
   }, []);
 
   const selectedTools = tools.filter((tool) => selected.includes(tool.id));
-  const inquiry = `Hi GetAI Tools! I'd like a quote for:\n\n${selectedTools.map((tool, index) => `${index + 1}. ${tool.name}`).join("\n")}\n\nPreferred duration: ${duration}\nCurrency: USD\n\nPlease confirm available plans, pricing, access details, and support terms.\n\nFrom getaitools.shop`;
+  const inquiry = `Hi GetAI Tools! I'd like a quote for:\n\n${selectedTools.map((tool, index) => `${index + 1}. ${tool.name}`).join("\n")}\n\nPreferred duration: ${duration}\nCurrency: USD\n\nPlease confirm availability, the exact plan, final USD price, access method, activation estimate, renewal, support, and refund/cancellation terms before payment.\n\nFrom getaitools.shop`;
 
   function removeTool(id: ToolId, name: string) {
     let next = selected.filter((item) => item !== id);
@@ -105,12 +106,13 @@ export default function ToolkitContent() {
         <div className="kit-currency"><span>YOUR QUOTE CURRENCY</span><strong>US dollars <span>USD $</span></strong></div>
         <div className="duration-field"><span>Preferred duration</span><div>{["Monthly", "Annual"].map((item) => <button key={item} aria-pressed={duration === item} className={duration === item ? "active" : ""} onClick={() => { setDuration(item); setCopied(false); setCopyError(false); }}>{item}</button>)}</div></div>
         <p className="kit-inquiry-copy">Ask about current plans, final pricing, access details, and support terms for all {selectedTools.length} {selectedTools.length === 1 ? "tool" : "tools"}.</p>
-        <button className="button button-primary inquiry-button" onClick={copyInquiry}>{copied ? <><CheckCheck size={18} /> Inquiry copied</> : <><Copy size={17} /> Copy pricing inquiry <ArrowUpRight size={17} /></>}</button>
+        <div className="launch-inquiry-actions"><a className="button button-primary inquiry-button" href={whatsappUrl(inquiry)} target="_blank" rel="noopener noreferrer">Continue on WhatsApp <ArrowUpRight size={17} /></a><a className="button launch-email-button" href={emailInquiryUrl("Toolkit plans & pricing inquiry", inquiry)}>Open email inquiry <ArrowUpRight size={17} /></a></div>
+        <button className="download-button" onClick={copyInquiry}>{copied ? <><CheckCheck size={18} /> Inquiry copied</> : <><Copy size={17} /> Copy pricing inquiry</>}</button>
         {copied && <p className="copy-success" role="status">Ready to share. Your inquiry has not been sent.</p>}
         {copyError && <p className="copy-error" role="alert">Clipboard access is unavailable. Open the preview below to select and copy your inquiry, or download the file.</p>}
         <button className="download-button" onClick={downloadInquiry}><Download size={15} /> Download inquiry as .txt</button>
         <details className="kit-preview"><summary>Preview your inquiry <ChevronDown size={15} /></summary><label htmlFor="inquiry-preview">Your pricing inquiry</label><textarea id="inquiry-preview" readOnly rows={11} value={inquiry} /></details>
-        <p className="basket-disclaimer">Preparing an inquiry does not send a message or place an order.</p>
+        <p className="basket-disclaimer">Review and send your message in WhatsApp or your email app. Opening an inquiry does not place an order or take payment. <Link href="/delivery">Delivery &amp; support</Link> · <Link href="/refunds">Refunds &amp; cancellations</Link></p>
       </aside>
     </div> : <section className="kit-empty" aria-labelledby="empty-title"><span className="kit-empty-icon"><ShoppingBag size={37} /><Sparkles size={19} /></span><div className="eyebrow section-eyebrow">START WITH A LITTLE CURIOSITY</div><h2 id="empty-title">Your next great idea<br /><span>deserves good company.</span></h2><p>Explore the collection and tap + to save your favorites. You can also add a tool from its detail page, then come back here to build your inquiry.</p><div className="kit-empty-actions"><Link className="button button-primary" href="/#tools">Find your first tool <ArrowUpRight size={18} /></Link><Link className="text-link" href="/how-it-works">See how it works <ArrowRight size={16} /></Link></div></section>}
 

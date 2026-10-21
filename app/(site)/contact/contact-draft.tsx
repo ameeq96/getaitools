@@ -2,6 +2,7 @@
 
 import { useRef, useState, type FormEvent } from "react";
 import { ArrowUpRight, CheckCheck, Copy, Download, MessageSquare } from "lucide-react";
+import { emailInquiryUrl, whatsappUrl } from "../../business";
 
 export default function ContactDraft() {
   const [name, setName] = useState("");
@@ -38,7 +39,7 @@ export default function ContactDraft() {
     ].join("\n"));
     setCopied(false);
     setError("");
-    setFeedback("Your draft is ready. Review it below, then copy or download it.");
+    setFeedback("Your draft is ready. Review it below, then open WhatsApp or your email app to send it.");
   }
 
   async function copyMessage() {
@@ -73,9 +74,9 @@ export default function ContactDraft() {
       <div className="contact-field"><label className="contact-field-label" htmlFor="contact-subject">What is it about?</label><select id="contact-subject" name="subject" value={subject} onChange={(event) => { setSubject(event.target.value); clearDraft(); }}><option>Plans &amp; pricing</option><option>An existing inquiry</option><option>Help choosing a tool</option></select></div>
       <div className="contact-field"><label className="contact-field-label" htmlFor="contact-message">Your message</label><textarea id="contact-message" name="message" ref={messageInput} required rows={6} maxLength={5000} placeholder="Tell us which tools you are considering, what you want to do, or the question on your mind…" value={message} onChange={(event) => { setMessage(event.target.value); clearDraft(); }} /></div>
       <button className="button button-primary" type="submit">Prepare message <ArrowUpRight size={17} /></button>
-      <p className="contact-form-note">This prepares your message; it does not send it. Copy or download your draft to keep it ready to share.</p>
+      <p className="contact-form-note">Prepare your message, then choose WhatsApp or email to review and send it in that app. You can also copy or download your draft.</p>
     </form>
-    {draft && <section className="contact-draft" aria-labelledby="contact-draft-title"><div className="contact-draft-heading"><h3 id="contact-draft-title">Your message, ready to share.</h3><span>DRAFT</span></div><label className="contact-field-label" htmlFor="contact-draft-preview">Prepared message</label><textarea id="contact-draft-preview" readOnly value={draft} rows={10} /><div className="contact-draft-actions"><button className="button button-primary" onClick={copyMessage}>{copied ? <><CheckCheck size={16} /> Message copied</> : <><Copy size={16} /> Copy message</>}</button><button className="download-button" onClick={downloadMessage}><Download size={15} /> Download .txt</button></div></section>}
+    {draft && <section className="contact-draft" aria-labelledby="contact-draft-title"><div className="contact-draft-heading"><h3 id="contact-draft-title">Your message, ready to share.</h3><span>DRAFT</span></div><label className="contact-field-label" htmlFor="contact-draft-preview">Prepared message</label><textarea id="contact-draft-preview" readOnly value={draft} rows={10} /><div className="contact-draft-actions"><a className="button button-primary" href={whatsappUrl(draft)} target="_blank" rel="noopener noreferrer">Open WhatsApp <ArrowUpRight size={16} /></a><a className="download-button" href={emailInquiryUrl(`GetAI Tools — ${subject}`, draft)}>Open email <ArrowUpRight size={15} /></a><button className="download-button" onClick={copyMessage}>{copied ? <><CheckCheck size={16} /> Message copied</> : <><Copy size={16} /> Copy message</>}</button><button className="download-button" onClick={downloadMessage}><Download size={15} /> Download .txt</button></div></section>}
     {error && <p className="contact-feedback copy-error" role="alert">{error}</p>}
     {feedback && <p className="contact-feedback copy-success" role="status">{feedback}</p>}
   </>;
