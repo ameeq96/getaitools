@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { ArrowDown, ArrowRight, ArrowUpRight, Check, CheckCheck, ChevronDown, Copy, Download, Grid2X2, Layers3, Menu, Minus, Plus, Search, ShoppingBag, SlidersHorizontal, Sparkles, WandSparkles, X } from "lucide-react";
 import { categories, tools, ToolLogo, type Category, type Tool, type ToolId } from "./catalog";
+import Link from "next/link";
 
 function Brand({ light = false }: { light?: boolean }) {
   return <span className={`brand ${light ? "brand-light" : ""}`}><span className="brand-mark" aria-hidden="true">g<span>✦</span></span><span>getai<span className="brand-tools">tools</span><span className="brand-dot">.</span></span></span>;
@@ -37,7 +38,7 @@ export default function Home() {
   const [category, setCategory] = useState<Category>("All tools");
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("featured");
-  const [activeTool, setActiveTool] = useState<Tool | null>(null);
+  const [page, setPage] = useState(1);
   const [selected, setSelected] = useState<ToolId[]>([]);
   const [restored, setRestored] = useState(false);
   const [basketOpen, setBasketOpen] = useState(false);
@@ -54,6 +55,7 @@ export default function Home() {
       const stored: unknown = JSON.parse(localStorage.getItem("getaitools-toolkit") || "[]");
       if (Array.isArray(stored)) setSelected([...new Set(stored.filter((id): id is ToolId => tools.some((tool) => tool.id === id)))]);
     } catch { /* A fresh toolkit is available if browser storage is unavailable. */ }
+    if (new URLSearchParams(window.location.search).get("toolkit") === "open") setBasketOpen(true);
     setRestored(true);
     return () => { if (toastTimeout.current) clearTimeout(toastTimeout.current); };
   }, []);
@@ -65,6 +67,11 @@ export default function Home() {
   }, [selected, restored]);
 
   const filteredTools = tools.filter((tool) => (category === "All tools" || tool.category === category) && `${tool.name} ${tool.maker} ${tool.description}`.toLowerCase().includes(search.trim().toLowerCase())).sort((a, b) => sort === "name" ? a.name.localeCompare(b.name) : 0);
+  const pageCount = Math.ceil(filteredTools.length / 10);
+  const currentPage = Math.min(page, Math.max(pageCount, 1));
+  const pageStart = (currentPage - 1) * 10;
+  const visibleTools = filteredTools.slice(pageStart, pageStart + 10);
+  const paginationPages = Array.from({ length: pageCount }, (_, index) => index + 1).filter((item) => item === 1 || item === pageCount || Math.abs(item - currentPage) <= 1);
   const selectedTools = tools.filter((tool) => selected.includes(tool.id));
 
   function notify(message: string) {
@@ -80,8 +87,13 @@ export default function Home() {
     notify(`${tool.name} added to your toolkit`);
   }
 
-  function resetFilters() { setCategory("All tools"); setSearch(""); setSort("featured"); }
-  function openBasket() { setActiveTool(null); setCopied(false); setCopyError(false); setBasketOpen(true); setMobileMenu(false); }
+  function resetFilters() { setCategory("All tools"); setSearch(""); setSort("featured"); setPage(1); }
+  function goToPage(nextPage: number) {
+    setPage(nextPage);
+    document.getElementById("catalog-heading")?.focus({ preventScroll: true });
+    document.getElementById("tools")?.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth", block: "start" });
+  }
+  function openBasket() { setCopied(false); setCopyError(false); setBasketOpen(true); setMobileMenu(false); }
   function inquiryText() {
     return `Hi GetAI Tools! I'd like a quote for:\n\n${selectedTools.map((tool, i) => `${i + 1}. ${tool.name}`).join("\n")}\n\nPreferred duration: ${duration}\nCurrency: USD\n\nPlease confirm available plans, pricing, access details, and support terms.\n\nFrom getaitools.shop`;
   }
@@ -130,17 +142,18 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="brands-section wrap" aria-label="Featured AI tools"><p>THE BRILLIANT MINDS BEHIND YOUR NEXT BIG IDEA</p><div className="brand-row">{tools.slice(0, 5).map((tool) => <button key={tool.id} onClick={() => setActiveTool(tool)}><ToolLogo id={tool.id} /><span>{tool.name}</span></button>)}</div></section>
+      <section className="brands-section wrap" aria-label="Featured AI tools"><p>THE BRILLIANT MINDS BEHIND YOUR NEXT BIG IDEA</p><div className="brand-row">{tools.slice(0, 5).map((tool) => <Link key={tool.id} href={`/tools/${tool.id}`}><ToolLogo id={tool.id} /><span>{tool.name}</span></Link>)}</div></section>
 
       <section id="tools" className="catalog-section wrap">
-        <div className="section-heading"><div><div className="eyebrow section-eyebrow"><span className="section-line" /> THE TOOL EDIT</div><h2>Meet your new toolkit<span>.</span></h2></div><p>For the ideas worth chasing.<br />And the everyday worth upgrading.</p></div>
-        <div className="catalog-toolbar"><div className="category-list" aria-label="Tool categories">{categories.map((item) => <button key={item} className={category === item ? "category active" : "category"} aria-pressed={category === item} onClick={() => setCategory(item)}>{item === "All tools" && <Grid2X2 size={13} />}{item}</button>)}</div><label className="search-field"><Search size={16} /><input aria-label="Search tools" value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Find your next tool…" />{search && <button onClick={() => setSearch("")} aria-label="Clear search"><X size={14} /></button>}</label></div>
-        <div className="results-bar"><span>{filteredTools.length} {filteredTools.length === 1 ? "tool" : "tools"}, endless possibilities</span><label className="sort-control"><SlidersHorizontal size={13} /><select value={sort} onChange={(event) => setSort(event.target.value)} aria-label="Sort tools"><option value="featured">Curated for you</option><option value="name">Name: A–Z</option></select><ChevronDown size={12} /></label></div>
-        <div className="product-grid">{filteredTools.map((tool, index) => <article className={`product-card product-${tool.id}`} key={tool.id} style={{ "--tool-accent": tool.accent, "--card-delay": `${Math.min(index, 7) * 45}ms` } as React.CSSProperties}>
-          <button className="product-visual" aria-label={`View ${tool.name} details`} onClick={() => setActiveTool(tool)}><span className="product-tag">{tool.tag}</span><span className="visual-grid" /><span className="visual-orbit orbit-a" /><span className="visual-orbit orbit-b" /><span className="visual-logo"><ToolLogo id={tool.id} /></span><span className="visual-caption">{tool.shortDescription}</span><span className="visual-index">{String(tools.indexOf(tool) + 1).padStart(2, "0")}</span></button>
-          <div className="product-content"><div className="product-category">{tool.category}</div><div className="product-title-row"><h3><button onClick={() => setActiveTool(tool)}>{tool.name}</button></h3><span className="maker">{tool.maker}</span></div><p>{tool.description}</p><div className="product-bottom"><button className="details-link" onClick={() => setActiveTool(tool)}>Explore tool <ArrowUpRight size={14} /></button><button className={selected.includes(tool.id) ? "add-tool added" : "add-tool"} aria-label={selected.includes(tool.id) ? `${tool.name} is in your toolkit` : `Add ${tool.name} to toolkit`} onClick={() => addTool(tool)}>{selected.includes(tool.id) ? <Check size={16} /> : <Plus size={17} />}</button></div></div>
+        <div className="section-heading"><div><div className="eyebrow section-eyebrow"><span className="section-line" /> THE TOOL EDIT</div><h2 id="catalog-heading" tabIndex={-1}>Meet your new toolkit<span>.</span></h2></div><p>For the ideas worth chasing.<br />And the everyday worth upgrading.</p></div>
+        <div className="catalog-toolbar"><div className="category-list" aria-label="Tool categories">{categories.map((item) => <button key={item} className={category === item ? "category active" : "category"} aria-pressed={category === item} onClick={() => { setCategory(item); setPage(1); }}>{item === "All tools" && <Grid2X2 size={13} />}{item}</button>)}</div><label className="search-field"><Search size={16} /><input aria-label="Search tools" value={search} onChange={(event) => { setSearch(event.target.value); setPage(1); }} placeholder="Find your next tool…" />{search && <button onClick={() => { setSearch(""); setPage(1); }} aria-label="Clear search"><X size={14} /></button>}</label></div>
+        <div className="results-bar"><span aria-live="polite">{filteredTools.length ? `Showing ${pageStart + 1}–${Math.min(pageStart + 10, filteredTools.length)} of ${filteredTools.length} tools` : "0 tools found"}</span><label className="sort-control"><SlidersHorizontal size={13} /><select value={sort} onChange={(event) => { setSort(event.target.value); setPage(1); }} aria-label="Sort tools"><option value="featured">Curated for you</option><option value="name">Name: A–Z</option></select><ChevronDown size={12} /></label></div>
+        <div id="catalog-grid" className="product-grid">{visibleTools.map((tool, index) => <article className={`product-card product-${tool.id}`} key={tool.id} style={{ "--tool-accent": tool.accent, "--card-delay": `${Math.min(index, 7) * 45}ms` } as React.CSSProperties}>
+          <Link className="product-visual" aria-label={`View ${tool.name} details`} href={`/tools/${tool.id}`}><span className="product-tag">{tool.tag}</span><span className="visual-grid" /><span className="visual-orbit orbit-a" /><span className="visual-orbit orbit-b" /><span className="visual-logo"><ToolLogo id={tool.id} /></span><span className="visual-caption">{tool.shortDescription}</span><span className="visual-index">{String(tools.indexOf(tool) + 1).padStart(2, "0")}</span></Link>
+          <div className="product-content"><div className="product-category">{tool.category}</div><div className="product-title-row"><h3><Link href={`/tools/${tool.id}`}>{tool.name}</Link></h3><span className="maker">{tool.maker}</span></div><p>{tool.description}</p><div className="product-bottom"><Link className="details-link" href={`/tools/${tool.id}`}>Explore tool <ArrowUpRight size={14} /></Link><button className={selected.includes(tool.id) ? "add-tool added" : "add-tool"} aria-label={selected.includes(tool.id) ? `${tool.name} is in your toolkit` : `Add ${tool.name} to toolkit`} onClick={() => addTool(tool)}>{selected.includes(tool.id) ? <Check size={16} /> : <Plus size={17} />}</button></div></div>
         </article>)}</div>
         {!filteredTools.length && <div className="empty-search"><Search size={32} /><h3>No tools found. New possibilities ahead.</h3><p>Try another name or explore a different category.</p><button className="button button-primary" onClick={resetFilters}>Show all tools <ArrowRight size={16} /></button></div>}
+        {pageCount > 1 && <nav className="pagination" aria-label="Catalog pagination"><button className="pagination-previous" aria-label="Previous page" aria-controls="catalog-grid" disabled={currentPage === 1} onClick={() => goToPage(currentPage - 1)}><ArrowRight size={15} /><span>Previous</span></button><div className="pagination-pages">{paginationPages.map((item, index) => <span className="pagination-slot" key={item}>{index > 0 && item - paginationPages[index - 1] > 1 && <span className="pagination-gap" aria-hidden="true">…</span>}<button aria-label={`Go to page ${item}`} aria-current={currentPage === item ? "page" : undefined} aria-controls="catalog-grid" onClick={() => goToPage(item)}>{item}</button></span>)}</div><button className="pagination-next" aria-label="Next page" aria-controls="catalog-grid" disabled={currentPage === pageCount} onClick={() => goToPage(currentPage + 1)}><span>Next</span><ArrowRight size={15} /></button></nav>}
         <p className="catalog-footnote"><span className="status-dot" /> Pick your tools. Request your plan. All quotes in USD.</p>
       </section>
 
@@ -154,8 +167,6 @@ export default function Home() {
     </main>
 
     <footer className="footer wrap"><div className="footer-main"><div><a className="brand-link" href="#" aria-label="GetAI Tools home"><Brand /></a><p>A little AI. A lot more possible.</p></div><div className="footer-links"><a href="#tools">The collection</a><a href="#how-it-works">How it works</a><a href="#faqs">FAQs</a><button onClick={openBasket}>Your toolkit <ArrowUpRight size={13} /></button></div><a className="back-top" href="#" aria-label="Back to top"><ArrowUpRight size={21} /></a></div><div className="footer-bottom"><span>© {new Date().getFullYear()} GetAI Tools</span><span>Independent storefront. Product names and marks belong to their respective owners.</span><span>Made for what’s next. <Sparkles size={12} /></span></div></footer>
-
-    <Modal open={activeTool !== null} title={activeTool ? `${activeTool.name} details` : "Tool details"} onDismiss={() => setActiveTool(null)} className="product-modal">{activeTool && <div className={`tool-detail product-${activeTool.id}`} style={{ "--tool-accent": activeTool.accent } as React.CSSProperties}><div className="detail-art"><span className="eyebrow">YOUR NEXT ADVANTAGE</span><ToolLogo id={activeTool.id} /><span className="detail-art-name">{activeTool.name}</span><span className="detail-art-caption">{activeTool.shortDescription}</span></div><div className="detail-copy"><span className="product-category">{activeTool.category} · {activeTool.maker}</span><h2>{activeTool.name}</h2><p>{activeTool.description}</p><h3>A little help with</h3><ul>{activeTool.features.map((feature) => <li key={feature}><Check size={16} />{feature}</li>)}</ul><div className="quote-note"><span>YOUR PLAN, YOUR POSSIBILITIES</span><strong>Let’s find the right fit.</strong><p>Request current plans, access details, and pricing. All quotes in USD.</p></div><button className="button button-primary" onClick={() => addTool(activeTool)}>{selected.includes(activeTool.id) ? <><Check size={17} /> In your toolkit</> : <>Add to your toolkit <Plus size={17} /></>}</button><button className="detail-basket-link" onClick={openBasket}>View your toolkit <ArrowRight size={14} /></button></div></div>}</Modal>
 
     <Modal open={basketOpen} title="Your toolkit" onDismiss={() => setBasketOpen(false)} className="basket-modal"><div className="basket-header"><span className="eyebrow section-eyebrow">A FEW GOOD TOOLS. A WORLD OF POSSIBILITY.</span><h2>Your toolkit<span>.</span></h2><p>{selected.length ? `${selected.length} ${selected.length === 1 ? "tool" : "tools"} for whatever comes next.` : "Your next great idea deserves good company."}</p></div>{selected.length ? <><div className="basket-items">{selectedTools.map((tool) => <div key={tool.id} className="basket-item"><span className={`basket-logo product-${tool.id}`} style={{ "--tool-accent": tool.accent } as React.CSSProperties}><ToolLogo id={tool.id} /></span><div><h3>{tool.name}</h3><span>{tool.category}</span></div><span className="basket-price">Quote in USD</span><button className="icon-button" aria-label={`Remove ${tool.name} from toolkit`} onClick={() => { setSelected((items) => items.filter((id) => id !== tool.id)); setCopied(false); }}><X size={17} /></button></div>)}</div><div className="duration-field"><span>Preferred duration</span><div>{["Monthly", "Annual"].map((item) => <button key={item} aria-pressed={duration === item} className={duration === item ? "active" : ""} onClick={() => { setDuration(item); setCopied(false); }}>{item}</button>)}</div></div><div className="inquiry-info"><Sparkles size={19} /><p>A great toolkit starts with the right plan. Copy your inquiry and share it with GetAI Tools to confirm availability and final pricing.</p></div><button className="button button-primary inquiry-button" onClick={copyInquiry}>{copied ? <><CheckCheck size={18} /> Inquiry copied</> : <><Copy size={17} /> Copy pricing inquiry <ArrowUpRight size={17} /></>}</button>{copyError && <p className="copy-error" role="alert">Clipboard access is unavailable. Download your inquiry instead.</p>}{copied && <p className="copy-success" role="status">Ready to share. Your inquiry has not been sent.</p>}<button className="download-button" onClick={downloadInquiry}><Download size={15} /> Download inquiry as .txt</button><p className="basket-disclaimer">An inquiry, a little curiosity, and no payment commitment.</p></> : <div className="empty-basket"><span><ShoppingBag size={36} /></span><h3>Let’s find your first tool.</h3><p>Browse the collection and tap + to start building.</p><a href="#tools" className="button button-primary" onClick={() => setBasketOpen(false)}>Explore tools <ArrowUpRight size={17} /></a></div>}</Modal>
     <div className={toast ? "toast toast-visible" : "toast"} role="status" aria-live="polite"><Check size={17} />{toast}</div>
