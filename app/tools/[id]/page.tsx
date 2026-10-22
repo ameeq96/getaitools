@@ -6,6 +6,10 @@ import { ArrowLeft, ArrowRight, ArrowUpRight, Check, ChevronRight, Layers3, Shop
 import { tools, ToolLogo } from "../../catalog";
 import ToolActions from "./tool-actions";
 import BusinessLinks from "../../business-links";
+import { getCategorySlug } from "../../catalog-seo";
+import { BreadcrumbJsonLd, JsonLd, siteUrl } from "../../seo";
+import { toolContent } from "../../tool-content";
+import { samplePlans } from "../../sample-plans";
 
 type ToolPageProps = { params: Promise<{ id: string }> };
 
@@ -20,12 +24,12 @@ export async function generateMetadata({ params }: ToolPageProps): Promise<Metad
   const tool = tools.find((item) => item.id === id);
   if (!tool) notFound();
   return {
-    title: `${tool.name} — Plans & Overview | GetAI Tools`,
-    description: `${tool.description} Explore ${tool.name}, build your toolkit, and request current plans and pricing in USD.`,
+    title: `${tool.name} Features & USD Quotes | GetAI Tools`,
+    description: `Explore ${tool.name} features, use cases and buying considerations. Ask GetAI Tools about available plans, access and quotes in USD.`,
     alternates: { canonical: `/tools/${tool.id}` },
     openGraph: {
-      title: `${tool.name} — GetAI Tools`,
-      description: tool.description,
+      title: `${tool.name} Features & USD Quotes | GetAI Tools`,
+      description: `Explore ${tool.name} and request available plans, access details and a quote in USD.`,
       url: `/tools/${tool.id}`,
       siteName: "GetAI Tools",
       type: "website"
@@ -42,8 +46,12 @@ export default async function ToolPage({ params }: ToolPageProps) {
   const tool = tools.find((item) => item.id === id);
   if (!tool) notFound();
   const relatedTools = tools.filter((item) => item.category === tool.category && item.id !== tool.id).slice(0, 3);
+  const content = toolContent[tool.id];
+  const categoryPath = `/categories/${getCategorySlug(tool.category)}`;
 
   return <>
+    <BreadcrumbJsonLd items={[{ name: "AI tools", path: "/" }, { name: tool.category, path: categoryPath }, { name: tool.name, path: `/tools/${tool.id}` }]} />
+    <JsonLd data={{ "@context": "https://schema.org", "@type": "WebPage", "@id": `${siteUrl}/tools/${tool.id}#webpage`, url: `${siteUrl}/tools/${tool.id}`, name: `${tool.name} features and USD quotes`, description: tool.description, inLanguage: "en", isPartOf: { "@id": `${siteUrl}/#website` }, about: { "@type": "Thing", name: tool.name, ...(content ? { sameAs: content.officialUrl } : {}) }, ...(content ? { dateModified: content.reviewedOn } : {}) }} />
     <div className="announcement"><span><Sparkles size={13} /> A little upgrade. A whole lot of possibility.</span><span>Curated AI tools. All in one place. <ArrowUpRight size={12} /></span></div>
     <header className="header wrap">
       <Link href="/" className="brand-link" aria-label="GetAI Tools home"><Brand /></Link>
@@ -52,13 +60,13 @@ export default async function ToolPage({ params }: ToolPageProps) {
     </header>
 
     <main className="tool-page" style={{ "--tool-accent": tool.accent } as CSSProperties}>
-      <nav className="tool-breadcrumbs wrap" aria-label="Breadcrumb"><Link href="/#tools"><ArrowLeft size={13} /> The collection</Link><ChevronRight size={12} /><span aria-current="page">{tool.name}</span></nav>
+      <nav className="tool-breadcrumbs wrap" aria-label="Breadcrumb"><Link href="/"><ArrowLeft size={13} /> AI tools</Link><ChevronRight size={12} /><Link href={categoryPath}>{tool.category}</Link><ChevronRight size={12} /><span aria-current="page">{tool.name}</span></nav>
 
       <section className="tool-hero wrap" aria-labelledby="tool-title">
         <div className="tool-intro">
           <div className="eyebrow section-eyebrow"><span className="section-line" /> YOUR NEXT ADVANTAGE</div>
           <div className="tool-identity"><span className="tool-icon"><ToolLogo id={tool.id} /></span><span className="tool-maker">{tool.category}<small>By {tool.maker}</small></span></div>
-          <h1 className="tool-title" id="tool-title">Meet {tool.name}<span>.</span></h1>
+          <h1 className="tool-title" id="tool-title">{tool.name}<span>.</span></h1>
           <p className="tool-lede">{tool.shortDescription}</p>
           <p className="tool-description">{tool.description}</p>
           <div className="tool-hero-actions"><a className="button button-primary" href="#tool-plan">Find your plan <ArrowUpRight size={18} /></a><Link className="text-link" href="/#tools">Keep exploring <ArrowRight size={16} /></Link></div>
@@ -76,9 +84,16 @@ export default async function ToolPage({ params }: ToolPageProps) {
 
       <section className="tool-details-grid wrap" aria-label={`${tool.name} capabilities and plans`}>
         <div className="tool-features">
-          <div className="tool-section-heading"><div className="eyebrow section-eyebrow"><span className="section-line" /> A LITTLE HELP GOES A LONG WAY</div><h2>Make room for<br /><span>more possibility.</span></h2><p>Explore what {tool.name} can bring to your toolkit.</p></div>
+          <div className="tool-section-heading"><div className="eyebrow section-eyebrow"><span className="section-line" /> FEATURES AND USE CASES</div><h2>Explore {tool.name}<br /><span>for your workflow.</span></h2><p>Explore what {tool.name} can bring to your toolkit.</p></div>
           <div className="tool-feature-grid">{tool.features.map((feature, index) => <article className="tool-feature" key={feature}><span className="tool-feature-number">0{index + 1}<Check size={16} /></span><h3>{feature}</h3><span className="tool-feature-line" /></article>)}</div>
           <div className="tool-use-note"><Sparkles size={21} /><div><h3>Your workflow. Your own mix.</h3><p>Add {tool.name} alongside the other tools you love. Build one toolkit and prepare a single inquiry for the plans you want to explore.</p></div></div>
+          {content && <div className="tool-editorial">
+            <section><h2>What is {tool.name} useful for?</h2><p>{content.overview}</p><h3>Who it can suit</h3><ul>{content.bestFor.map((item) => <li key={item}>{item}</li>)}</ul></section>
+            <section><h2>{content.exampleWorkflow.title}</h2><p className="tool-editorial-note">An example workflow to help you evaluate the tool. Results depend on your inputs and the plan you use.</p><ol>{content.exampleWorkflow.steps.map((step) => <li key={step}>{step}</li>)}</ol></section>
+            <section><h2>Before choosing a {tool.name} plan</h2><ul>{content.considerations.map((item) => <li key={item}>{item}</li>)}</ul><p>Ask for the exact plan, included limits, access method, activation estimate, renewal, support and refund terms before payment. <Link href="/delivery">Read delivery and support information</Link>.</p></section>
+            <section className="tool-sample-plans" data-nosnippet><span className="eyebrow">SAMPLE PRICING PREVIEW</span><h2>Example USD plans</h2><p>These example amounts illustrate the plan layout. They are not available offers, provider prices or a final quote. Ask us for confirmed pricing before payment.</p><div>{samplePlans.map((plan) => <article key={plan.name}><h3>{plan.name}</h3><strong>${plan.priceUsd.toFixed(2)} <span>USD</span></strong><p>{plan.duration} · sample only</p></article>)}</div></section>
+            <section className="tool-official-sources"><h2>Official information</h2><p>Product information reviewed on <time dateTime={content.reviewedOn}>{new Intl.DateTimeFormat("en", { dateStyle: "long", timeZone: "UTC" }).format(new Date(`${content.reviewedOn}T00:00:00Z`))}</time>. Features and plan details can change; check the provider’s current information.</p><ul>{content.sources.map((source) => <li key={source.url}><a href={source.url} target="_blank" rel="noopener noreferrer">{source.title} <ArrowUpRight size={13} /></a></li>)}</ul>{(tool.id === "chatgpt" || tool.id === "claude") && <p><Link href="/compare/chatgpt-vs-claude">Compare ChatGPT and Claude for writing</Link></p>}</section>
+          </div>}
         </div>
 
         <aside className="tool-plan" id="tool-plan" aria-labelledby="tool-plan-title">
@@ -86,7 +101,7 @@ export default async function ToolPage({ params }: ToolPageProps) {
           <h2 id="tool-plan-title">Good tools.<br /><span>The right fit.</span></h2>
           <div className="tool-plan-currency"><span>PRICING</span><strong>Quote in USD <span>$</span></strong></div>
           <p className="tool-plan-copy">Request current plans, availability, and access details for {tool.name} before you decide.</p>
-          <ul className="tool-plan-steps"><li><Check size={15} /> Add this tool to your selection</li><li><Check size={15} /> Choose your preferred duration</li><li><Check size={15} /> Prepare your pricing inquiry</li></ul>
+          <ul className="tool-plan-steps"><li><Check size={15} /> Request the exact plan and USD quote</li><li><Check size={15} /> Confirm access and activation</li><li><Check size={15} /> Review renewal, support and refund terms</li></ul>
           <ToolActions id={tool.id} name={tool.name} />
           <p className="tool-plan-footnote">Explore first. Confirm your plan and final price before payment.</p>
         </aside>
