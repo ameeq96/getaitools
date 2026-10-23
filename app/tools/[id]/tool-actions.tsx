@@ -53,7 +53,7 @@ export default function ToolActions({ id, name }: { id: ToolId; name: string }) 
 
   return <div className="tool-actions">
     <a className="button button-primary" href={whatsappUrl(inquiry)} target="_blank" rel="noopener noreferrer">Ask on WhatsApp <ArrowRight size={17} /></a>
-    <button className="button button-primary" onClick={addTool} disabled={!restored || added} aria-label={added ? `${name} is in your toolkit` : `Add ${name} to toolkit`}>
+    <button className="button button-primary" onClick={addTool} disabled={!restored || added} aria-label={added ? `In your toolkit: ${name}` : `Add to your toolkit: ${name}`}>
       {added ? <><Check size={17} /> In your toolkit</> : <>Add to your toolkit <Plus size={17} /></>}
     </button>
     <Link className="detail-basket-link" href="/toolkit">View your toolkit <ArrowRight size={14} /></Link>

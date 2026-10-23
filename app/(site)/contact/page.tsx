@@ -3,17 +3,13 @@ import Link from "next/link";
 import { ArrowRight, ArrowUpRight, HelpCircle, Layers3, MessageSquare } from "lucide-react";
 import ContactDraft from "./contact-draft";
 import { businessEmail, emailInquiryUrl, whatsappLabel, whatsappUrl } from "../../business";
+import { socialMetadata } from "../../seo";
 
 export const metadata: Metadata = {
   title: "Contact — GetAI Tools",
   description: "Contact GetAI Tools on WhatsApp or email about AI tools, available plans, and pricing in USD.",
   alternates: { canonical: "/contact" },
-  openGraph: {
-    title: "Contact — GetAI Tools",
-    description: "Contact GetAI Tools on WhatsApp or email about AI tools, available plans, and pricing in USD.",
-    url: "/contact",
-    type: "website"
-  }
+  ...socialMetadata("Contact — GetAI Tools", "Contact GetAI Tools on WhatsApp or email about AI tools, available plans, and pricing in USD.", "/contact")
 };
 
 export default function ContactPage() {

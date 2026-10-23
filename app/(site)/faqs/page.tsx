@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, ArrowUpRight, Plus } from "lucide-react";
+import { socialMetadata } from "../../seo";
 
 export const metadata: Metadata = {
   title: "FAQs — A Little Clarity | GetAI Tools",
   description: "Find answers about exploring AI tools, saving your toolkit, monthly and annual preferences, and requesting current plans and pricing in USD.",
   alternates: { canonical: "/faqs" },
-  openGraph: { title: "FAQs — GetAI Tools", description: "A little clarity. A lot less guesswork. Answers to your questions about GetAI Tools.", url: "/faqs", type: "website" }
+  ...socialMetadata("FAQs — GetAI Tools", "A little clarity. A lot less guesswork. Answers to your questions about GetAI Tools.", "/faqs")
 };
 
 const faqs = [

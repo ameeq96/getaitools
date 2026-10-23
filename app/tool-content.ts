@@ -1,4 +1,7 @@
 import type { ToolId } from './catalog';
+import { creativeToolContent } from './tool-content-creative';
+import { technicalToolContent } from './tool-content-technical';
+import { workToolContent } from './tool-content-work';
 
 export type ToolContent = {
   overview: string;
@@ -11,6 +14,9 @@ export type ToolContent = {
 };
 
 export const toolContent: Partial<Record<ToolId, ToolContent>> = {
+  ...creativeToolContent,
+  ...technicalToolContent,
+  ...workToolContent,
   chatgpt: {
     overview: 'ChatGPT brings conversational writing, learning, web research, image creation, and coding assistance into one product. It can help turn rough notes into a structured draft, explain unfamiliar concepts, or work through a technical problem with follow-up questions. Its work features also support creating and editing documents, spreadsheets, and presentations. A useful starting point is a specific task with your audience, source material, and desired output format, rather than an open-ended request for a perfect answer.',
     bestFor: ['Writers turning research notes into a first draft', 'Students exploring concepts through follow-up questions', 'Teams preparing documents and practical work deliverables'],

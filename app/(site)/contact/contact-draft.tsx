@@ -3,6 +3,7 @@
 import { useRef, useState, type FormEvent } from "react";
 import { ArrowUpRight, CheckCheck, Copy, Download, MessageSquare } from "lucide-react";
 import { emailInquiryUrl, whatsappUrl } from "../../business";
+import { notifyInquiryPrepared } from "../../inquiry-metrics";
 
 export default function ContactDraft() {
   const [name, setName] = useState("");
@@ -40,6 +41,7 @@ export default function ContactDraft() {
     setCopied(false);
     setError("");
     setFeedback("Your draft is ready. Review it below, then open WhatsApp or your email app to send it.");
+    notifyInquiryPrepared();
   }
 
   async function copyMessage() {

@@ -1,17 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { BreadcrumbJsonLd } from "../../../seo";
+import { BreadcrumbJsonLd, socialMetadata } from "../../../seo";
 
 export const metadata: Metadata = {
   title: "ChatGPT vs Claude for Writing: Workflow & Plan Guide | GetAI Tools",
   description: "Compare documented ChatGPT and Claude writing uses, try the same evaluation brief, and learn what to check before choosing an AI writing plan.",
   alternates: { canonical: "/compare/chatgpt-vs-claude" },
-  openGraph: {
-    title: "ChatGPT vs Claude for Writing — GetAI Tools",
-    description: "A practical guide to first drafts, revisions, human review, and plan questions for ChatGPT and Claude.",
-    url: "/compare/chatgpt-vs-claude",
-    type: "website"
-  }
+  ...socialMetadata("ChatGPT vs Claude for Writing — GetAI Tools", "A practical guide to first drafts, revisions, human review, and plan questions for ChatGPT and Claude.", "/compare/chatgpt-vs-claude")
 };
 
 export default function ChatGPTVsClaudePage() {

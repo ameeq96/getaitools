@@ -2,12 +2,13 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { businessEmail, whatsappLabel, whatsappUrl, emailInquiryUrl } from "../../business";
+import { socialMetadata } from "../../seo";
 
 export const metadata: Metadata = {
   title: "Delivery, Renewal & Support — GetAI Tools",
   description: "Confirm AI tool access, activation estimates, renewal arrangements and support with GetAI Tools before payment. Contact us by WhatsApp or email.",
   alternates: { canonical: "/delivery" },
-  openGraph: { title: "Delivery, Renewal & Support — GetAI Tools", description: "Know what to confirm about access, activation, renewal and support for your requested AI plan.", url: "/delivery", type: "website" }
+  ...socialMetadata("Delivery, Renewal & Support — GetAI Tools", "Know what to confirm about access, activation, renewal and support for your requested AI plan.", "/delivery")
 };
 
 export default function DeliveryPage() {

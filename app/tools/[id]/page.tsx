@@ -3,11 +3,11 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight, ArrowUpRight, Check, ChevronRight, Layers3, ShoppingBag, Sparkles } from "lucide-react";
-import { tools, ToolLogo } from "../../catalog";
+import { tools, ToolLogo, type Tool } from "../../catalog";
 import ToolActions from "./tool-actions";
 import BusinessLinks from "../../business-links";
 import { getCategorySlug } from "../../catalog-seo";
-import { BreadcrumbJsonLd, JsonLd, siteUrl } from "../../seo";
+import { BreadcrumbJsonLd, JsonLd, siteUrl, socialMetadata } from "../../seo";
 import { toolContent } from "../../tool-content";
 import { samplePlans } from "../../sample-plans";
 
@@ -23,18 +23,25 @@ export async function generateMetadata({ params }: ToolPageProps): Promise<Metad
   const { id } = await params;
   const tool = tools.find((item) => item.id === id);
   if (!tool) notFound();
+  const description = tool.description + " Request available plans and a USD quote.";
   return {
     title: `${tool.name} Features & USD Quotes | GetAI Tools`,
-    description: `Explore ${tool.name} features, use cases and buying considerations. Ask GetAI Tools about available plans, access and quotes in USD.`,
+    description,
     alternates: { canonical: `/tools/${tool.id}` },
-    openGraph: {
-      title: `${tool.name} Features & USD Quotes | GetAI Tools`,
-      description: `Explore ${tool.name} and request available plans, access details and a quote in USD.`,
-      url: `/tools/${tool.id}`,
-      siteName: "GetAI Tools",
-      type: "website"
-    }
+    ...socialMetadata(`${tool.name} Features & USD Quotes | GetAI Tools`, description, `/tools/${tool.id}`)
   };
+}
+
+function getRelatedTools(tool: Tool) {
+  const peers = tools.filter((item) => item.category === tool.category);
+  const index = peers.findIndex((item) => item.id === tool.id);
+  const neighbors = [peers[(index + 1) % peers.length], peers[(index + peers.length - 1) % peers.length]].filter((item) => item.id !== tool.id);
+  const ignored = new Set(["your", "with", "from", "into", "create", "explore", "ideas", "build", "develop", "generate", "through", "work", "tools", "content", "more", "using"]);
+  const terms = new Set(tool.features.join(" ").toLowerCase().match(/[a-z]{3,}/g)?.filter((term) => !ignored.has(term)));
+  const alternatives = peers.filter((item) => item.id !== tool.id && !neighbors.some((neighbor) => neighbor.id === item.id));
+  const score = (item: Tool) => new Set(item.features.join(" ").toLowerCase().match(/[a-z]{3,}/g)?.filter((term) => terms.has(term))).size;
+  alternatives.sort((a, b) => score(b) - score(a));
+  return [...(alternatives[0] ? [alternatives[0]] : []), ...neighbors].filter((item, position, items) => items.findIndex((other) => other.id === item.id) === position).slice(0, 3);
 }
 
 function Brand() {
@@ -45,7 +52,7 @@ export default async function ToolPage({ params }: ToolPageProps) {
   const { id } = await params;
   const tool = tools.find((item) => item.id === id);
   if (!tool) notFound();
-  const relatedTools = tools.filter((item) => item.category === tool.category && item.id !== tool.id).slice(0, 3);
+  const relatedTools = getRelatedTools(tool);
   const content = toolContent[tool.id];
   const categoryPath = `/categories/${getCategorySlug(tool.category)}`;
 
@@ -54,9 +61,9 @@ export default async function ToolPage({ params }: ToolPageProps) {
     <JsonLd data={{ "@context": "https://schema.org", "@type": "WebPage", "@id": `${siteUrl}/tools/${tool.id}#webpage`, url: `${siteUrl}/tools/${tool.id}`, name: `${tool.name} features and USD quotes`, description: tool.description, inLanguage: "en", isPartOf: { "@id": `${siteUrl}/#website` }, about: { "@type": "Thing", name: tool.name, ...(content ? { sameAs: content.officialUrl } : {}) }, ...(content ? { dateModified: content.reviewedOn } : {}) }} />
     <div className="announcement"><span><Sparkles size={13} /> A little upgrade. A whole lot of possibility.</span><span>Curated AI tools. All in one place. <ArrowUpRight size={12} /></span></div>
     <header className="header wrap">
-      <Link href="/" className="brand-link" aria-label="GetAI Tools home"><Brand /></Link>
+      <Link href="/" className="brand-link"><Brand /></Link>
       <nav className="tool-page-nav" aria-label="Main navigation"><Link href="/#tools">The collection</Link><Link href="/how-it-works">How it works</Link></nav>
-      <div className="header-actions"><span className="currency">USD <span>$</span></span><span className="header-divider" /><Link className="toolkit-button" href="/toolkit"><ShoppingBag size={17} /><span>Your toolkit</span><ArrowUpRight size={13} /></Link></div>
+      <div className="header-actions"><span className="currency">USD <span>$</span></span><span className="header-divider" /><Link className="toolkit-button" href="/toolkit" aria-label="Your toolkit"><ShoppingBag size={17} /><span>Your toolkit</span><ArrowUpRight size={13} /></Link></div>
     </header>
 
     <main className="tool-page" style={{ "--tool-accent": tool.accent } as CSSProperties}>
@@ -110,6 +117,6 @@ export default async function ToolPage({ params }: ToolPageProps) {
       {relatedTools.length > 0 && <section className="tool-related wrap" aria-labelledby="related-title"><div className="section-heading"><div><div className="eyebrow section-eyebrow"><span className="section-line" /> GOOD COMPANY FOR YOUR TOOLKIT</div><h2 id="related-title">Keep the ideas <span>coming.</span></h2></div><Link className="text-link" href="/#tools">Explore the collection <ArrowUpRight size={16} /></Link></div><div className="tool-related-grid">{relatedTools.map((related) => <Link className="tool-related-card" href={`/tools/${related.id}`} key={related.id} style={{ "--tool-accent": related.accent } as CSSProperties}><span className={`tool-related-icon product-${related.id}`}><ToolLogo id={related.id} /></span><span className="tool-related-copy"><span className="tool-related-category">{related.category}</span><h3>{related.name}</h3><p>{related.shortDescription}</p></span><ArrowUpRight size={18} /></Link>)}</div></section>}
     </main>
 
-    <footer className="footer wrap"><div className="footer-main"><div><Link className="brand-link" href="/" aria-label="GetAI Tools home"><Brand /></Link><p>A little AI. A lot more possible.</p></div><div className="footer-links"><Link href="/#tools">The collection</Link><Link href="/about">About</Link><Link href="/how-it-works">How it works</Link><Link href="/faqs">FAQs</Link><Link href="/contact">Contact</Link><Link href="/toolkit">Your toolkit <ArrowUpRight size={13} /></Link></div><a className="back-top" href="#tool-title" aria-label="Back to tool overview"><ArrowUpRight size={21} /></a></div><BusinessLinks /><div className="footer-bottom"><span>© {new Date().getFullYear()} GetAI Tools</span><span>Independent storefront. Product names and marks belong to their respective owners.</span><span>Made for what’s next. <Sparkles size={12} /></span></div></footer>
+    <footer className="footer wrap"><div className="footer-main"><div><Link className="brand-link" href="/"><Brand /></Link><p>A little AI. A lot more possible.</p></div><div className="footer-links"><Link href="/#tools">The collection</Link><Link href="/about">About</Link><Link href="/how-it-works">How it works</Link><Link href="/faqs">FAQs</Link><Link href="/contact">Contact</Link><Link href="/toolkit">Your toolkit <ArrowUpRight size={13} /></Link></div><a className="back-top" href="#tool-title" aria-label="Back to tool overview"><ArrowUpRight size={21} /></a></div><BusinessLinks /><div className="footer-bottom"><span>© {new Date().getFullYear()} GetAI Tools</span><span>Independent storefront. Product names and marks belong to their respective owners.</span><span>Made for what’s next. <Sparkles size={12} /></span></div></footer>
   </>;
 }

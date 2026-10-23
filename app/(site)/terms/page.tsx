@@ -2,12 +2,13 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { businessEmail, whatsappLabel, whatsappUrl, emailInquiryUrl } from "../../business";
+import { socialMetadata } from "../../seo";
 
 export const metadata: Metadata = {
   title: "Terms — Inquiries & Orders | GetAI Tools",
   description: "Understand the GetAI Tools manual inquiry process, USD quotations, plan confirmation, and third-party tool information before payment.",
   alternates: { canonical: "/terms" },
-  openGraph: { title: "Terms — GetAI Tools", description: "Clear information about browsing, inquiries and confirming your plan before payment.", url: "/terms", type: "website" }
+  ...socialMetadata("Terms — GetAI Tools", "Clear information about browsing, inquiries and confirming your plan before payment.", "/terms")
 };
 
 export default function TermsPage() {

@@ -2,12 +2,13 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { businessEmail, whatsappLabel, whatsappUrl, emailInquiryUrl } from "../../business";
+import { socialMetadata } from "../../seo";
 
 export const metadata: Metadata = {
   title: "Refunds & Cancellations — GetAI Tools",
   description: "How to ask GetAI Tools about a cancellation, access problem or refund request, and which order-specific terms to confirm before payment.",
   alternates: { canonical: "/refunds" },
-  openGraph: { title: "Refunds & Cancellations — GetAI Tools", description: "Get clarity on cancellation and refund terms before payment, or contact us about an existing order.", url: "/refunds", type: "website" }
+  ...socialMetadata("Refunds & Cancellations — GetAI Tools", "Get clarity on cancellation and refund terms before payment, or contact us about an existing order.", "/refunds")
 };
 
 export default function RefundsPage() {

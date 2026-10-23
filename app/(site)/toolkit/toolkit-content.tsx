@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ArrowRight, ArrowUpRight, CheckCheck, ChevronDown, ChevronRight, Copy, Download, Plus, ShoppingBag, Sparkles, X } from "lucide-react";
 import { tools, ToolLogo, type ToolId } from "../../catalog";
 import { emailInquiryUrl, whatsappUrl } from "../../business";
+import { notifyInquiryPrepared } from "../../inquiry-metrics";
 
 const toolkitKey = "getaitools-toolkit";
 const toolIds = new Set<string>(tools.map((tool) => tool.id));
@@ -60,6 +61,7 @@ export default function ToolkitContent() {
   async function copyInquiry() {
     try {
       await navigator.clipboard.writeText(inquiry);
+      notifyInquiryPrepared();
       setCopied(true);
       setCopyError(false);
       setMessage("");
@@ -75,6 +77,7 @@ export default function ToolkitContent() {
     anchor.href = url;
     anchor.download = "getaitools-inquiry.txt";
     anchor.click();
+    notifyInquiryPrepared();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
     setMessage("Your inquiry file is ready to download. It has not been sent.");
   }

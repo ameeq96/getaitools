@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, ArrowUpRight, Check, Copy, Download, Plus, Search, ShoppingBag } from "lucide-react";
+import { socialMetadata } from "../../seo";
 
 export const metadata: Metadata = {
   title: "How It Works — Build Your AI Toolkit | GetAI Tools",
   description: "Explore AI tools, save your favorites, and prepare a pricing inquiry in USD. Three simple steps to find your next AI advantage.",
   alternates: { canonical: "/how-it-works" },
-  openGraph: { title: "How It Works — GetAI Tools", description: "From curious to creating. Find a tool, build a toolkit, and request your plan in USD.", url: "/how-it-works", type: "website" }
+  ...socialMetadata("How It Works — GetAI Tools", "From curious to creating. Find a tool, build a toolkit, and request your plan in USD.", "/how-it-works")
 };
 
 const steps = [

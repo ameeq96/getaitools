@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import Home from "./home";
 import { tools } from "./catalog";
 import { getCatalogUrl } from "./catalog-seo";
+import { socialMetadata } from "./seo";
 
 type CatalogSearchParams = Promise<Record<string, string | string[] | undefined>>;
 
@@ -28,7 +29,7 @@ export async function generateMetadata({ searchParams }: { searchParams: Catalog
     description,
     alternates: { canonical },
     robots: hasFilters ? { index: false, follow: true } : { index: true, follow: true },
-    openGraph: { title, description, url: canonical, type: "website", siteName: "GetAI Tools" }
+    ...socialMetadata(title, description, canonical)
   };
 }
 

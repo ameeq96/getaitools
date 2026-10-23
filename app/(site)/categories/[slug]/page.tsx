@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 import { ArrowRight, ArrowUpRight, Search } from "lucide-react";
 import { tools, ToolLogo } from "../../../catalog";
 import { categoryPages, getCatalogUrl } from "../../../catalog-seo";
-import { BreadcrumbJsonLd } from "../../../seo";
+import { BreadcrumbJsonLd, socialMetadata } from "../../../seo";
 
 type CategoryPageProps = { params: Promise<{ slug: string }>; searchParams: Promise<Record<string, string | string[] | undefined>> };
 
@@ -37,7 +37,7 @@ export async function generateMetadata(props: CategoryPageProps): Promise<Metada
   const title = `${category.title}${page > 1 ? ` — Page ${page}` : ""} | GetAI Tools`;
   const description = page > 1 ? `Page ${page} of ${category.name.toLowerCase()} tools on GetAI Tools. Continue comparing tool overviews and request available plans and pricing in USD.` : category.description;
   const canonical = getCatalogUrl({ category: category.name, page });
-  return { title, description, alternates: { canonical }, robots: filtered ? { index: false, follow: true } : undefined, openGraph: { title, description, url: canonical, type: "website" } };
+  return { title, description, alternates: { canonical }, robots: filtered ? { index: false, follow: true } : undefined, ...socialMetadata(title, description, canonical) };
 }
 
 export default async function CategoryPage(props: CategoryPageProps) {
@@ -61,7 +61,7 @@ export default async function CategoryPage(props: CategoryPageProps) {
       <form action={categoryPath} method="get" className="catalog-toolbar" role="search"><label className="search-field"><Search size={16} /><input name="q" type="search" aria-label={`Search ${category.name.toLowerCase()} tools`} placeholder="Search this category…" defaultValue={q} /></label><label className="sort-control">Sort tools<select name="sort" aria-label="Sort tools" defaultValue={sort}><option value="featured">Curated for you</option><option value="name">Name: A–Z</option></select></label><button className="button button-primary" type="submit">Apply <ArrowRight size={15} /></button></form>
       <div className="results-bar"><span>{matchingTools.length ? `Showing ${pageStart + 1}–${Math.min(pageStart + 10, matchingTools.length)} of ${matchingTools.length} tools` : "0 tools found"}</span><Link className="text-link" href="/categories">All categories <ArrowUpRight size={14} /></Link></div>
       <div id="catalog-grid" className="product-grid">{visibleTools.map((tool, index) => <article className={`product-card product-${tool.id}`} key={tool.id} style={{ "--tool-accent": tool.accent, "--card-delay": `${Math.min(index, 7) * 45}ms` } as CSSProperties}>
-        <Link className="product-visual" aria-label={`View ${tool.name} details`} href={`/tools/${tool.id}`}><span className="product-tag">{tool.tag}</span><span className="visual-grid" /><span className="visual-orbit orbit-a" /><span className="visual-orbit orbit-b" /><span className="visual-logo"><ToolLogo id={tool.id} /></span><span className="visual-caption">{tool.shortDescription}</span><span className="visual-index">{String(pageStart + index + 1).padStart(2, "0")}</span></Link>
+        <Link className="product-visual" href={`/tools/${tool.id}`}><span className="product-tag">{tool.tag}</span><span className="visual-grid" /><span className="visual-orbit orbit-a" /><span className="visual-orbit orbit-b" /><span className="visual-logo"><ToolLogo id={tool.id} /></span><span className="visual-caption">{tool.shortDescription}</span><span className="visual-index">{String(pageStart + index + 1).padStart(2, "0")}</span></Link>
         <div className="product-content"><div className="product-category">{tool.category}</div><div className="product-title-row"><h2><Link href={`/tools/${tool.id}`}>{tool.name}</Link></h2><span className="maker">{tool.maker}</span></div><p>{tool.description}</p><div className="product-bottom"><Link className="details-link" href={`/tools/${tool.id}`}>Explore tool <ArrowUpRight size={14} /></Link></div></div>
       </article>)}</div>
       {!matchingTools.length && <div className="empty-search"><Search size={32} /><h2>No matching tools.</h2><p>Try a different name or clear the search to explore this category.</p><Link className="button button-primary" href={categoryPath}>Show category tools <ArrowRight size={16} /></Link></div>}
