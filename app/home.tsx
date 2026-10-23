@@ -79,7 +79,7 @@ export default function Home({ initialCategory = "All tools", initialSearch = ""
   const currentPage = Math.min(page, Math.max(pageCount, 1));
   const pageStart = (currentPage - 1) * 10;
   const visibleTools = filteredTools.slice(pageStart, pageStart + 10);
-  const paginationPages = Array.from({ length: pageCount }, (_, index) => index + 1).filter((item) => item === 1 || item === pageCount || Math.abs(item - currentPage) <= 1);
+  const paginationPages = Array.from({ length: pageCount }, (_, index) => index + 1).filter((item) => item === 1 || item === pageCount || item % 5 === 0 || Math.abs(item - currentPage) <= 1);
   const selectedTools = tools.filter((tool) => selected.includes(tool.id));
 
   function notify(message: string) {
