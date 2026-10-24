@@ -21,25 +21,31 @@ const toolPlans: Partial<Record<ToolId, ToolPlan[]>> = {
     {"id":"chatgpt-4","name":"Plus","priceUsd":6.75,"duration":"1 month","access":"Shared; one device","status":"On request","summaryEligible":true,"note":""},
     {"id":"chatgpt-6","name":"Plus","priceUsd":9,"duration":"45 days","access":"Shared; one device","status":"On request","summaryEligible":true,"note":""},
     {"id":"chatgpt-7","name":"Plus","priceUsd":22.04,"duration":"1 month","access":"Personal; own email","status":"On request","summaryEligible":true,"note":""},
-    {"id":"chatgpt-8","name":"Plus","priceUsd":32.39,"duration":"45 days","access":"Personal; own email","status":"On request","summaryEligible":true,"note":""},
+    {"id":"chatgpt-8","name":"Plus","priceUsd":32.39,"duration":"45 days","access":"Personal; own email","status":"On request","summaryEligible":true,"note":""}
+  ],
+  "claude": [
+    {"id":"claude-1","name":"Claude Pro","priceUsd":24.74,"duration":"1 month","access":"Private (seller claim)","status":"On request","summaryEligible":true,"note":"Private Claude Pro access. Confirm account ownership, activation, usage limits and support before payment."}
   ],
   "gemini": [
     {"id":"gemini-1","name":"Google AI Pro","priceUsd":25.19,"duration":"1 month","access":"Direct Google subscription; eligible account","status":"On request","summaryEligible":true,"note":"Pakistan in-app or provider plan; eligibility may differ from web plans. Confirm account eligibility and activation method; reseller access can differ from a direct Google plan."},
-    {"id":"gemini-2","name":"Google AI Plus","priceUsd":6.3,"duration":"1 month","access":"Direct Google subscription; eligible account","status":"On request","summaryEligible":true,"note":"Pakistan in-app or provider plan; eligibility may differ from web plans. Confirm account eligibility and activation method; reseller access can differ from a direct Google plan."},
+    {"id":"gemini-2","name":"Google AI Plus","priceUsd":6.3,"duration":"1 month","access":"Direct Google subscription; eligible account","status":"On request","summaryEligible":true,"note":"Pakistan in-app or provider plan; eligibility may differ from web plans. Confirm account eligibility and activation method; reseller access can differ from a direct Google plan."}
+  ],
+  "midjourney": [
+    {"id":"midjourney-1","name":"Standard","priceUsd":13.49,"duration":"1 month","access":"Shared account; direct Midjourney website login","status":"On request","summaryEligible":true,"note":"Shared monthly access; the listing states 30-day replacement coverage. Confirm usage limits, account restrictions and final support terms before payment."}
   ],
   "perplexity": [
     {"id":"perplexity-5","name":"Pro","priceUsd":33.74,"duration":"12 months","access":"Own email activation","status":"On request","summaryEligible":true,"note":""}
   ],
   "canva": [
     {"id":"canva-1","name":"Canva Pro team invitation","priceUsd":0.67,"duration":"1 month","access":"Team invitation to existing email","status":"On request","summaryEligible":true,"note":""},
-    {"id":"canva-2","name":"Canva Pro team invitation","priceUsd":1.35,"duration":"12 months total","access":"Team invitation","status":"On request","summaryEligible":true,"note":""},
+    {"id":"canva-2","name":"Canva Pro team invitation","priceUsd":1.35,"duration":"12 months total","access":"Team invitation","status":"On request","summaryEligible":true,"note":""}
   ],
   "runway": [
-    {"id":"runway-1","name":"Pro","priceUsd":24.74,"duration":"1 month","access":"Private","status":"On request","summaryEligible":true,"note":"Confirm included monthly credits and export limits."},
+    {"id":"runway-1","name":"Pro","priceUsd":24.74,"duration":"1 month","access":"Private","status":"On request","summaryEligible":true,"note":"Confirm included monthly credits and export limits."}
   ],
   "elevenlabs": [
     {"id":"elevenlabs-1","name":"Creator","priceUsd":14.85,"duration":"1 month","access":"Private","status":"On request","summaryEligible":true,"note":"Credit allowances vary between options; confirm the exact allowance."},
-    {"id":"elevenlabs-2","name":"Creator","priceUsd":105.72,"duration":"12 months total","access":"Personal account","status":"On request","summaryEligible":true,"note":"Credit allowances vary between options; confirm the exact allowance."},
+    {"id":"elevenlabs-2","name":"Creator","priceUsd":105.72,"duration":"12 months total","access":"Personal account","status":"On request","summaryEligible":true,"note":"Credit allowances vary between options; confirm the exact allowance."}
   ],
   "notion-ai": [
     {"id":"notion-ai-1","name":"Notion Business Personal Account","priceUsd":10.35,"duration":"3 months","access":"Seller claims personal account","status":"On request","summaryEligible":true,"note":"Confirm AI allowance, workspace ownership and support period; some longer offers have only a three-month warranty."},
@@ -49,10 +55,13 @@ const toolPlans: Partial<Record<ToolId, ToolPlan[]>> = {
     {"id":"gemini-notebook-1","name":"Google AI Pro (includes Gemini Notebook)","priceUsd":25.19,"duration":"1 month","access":"Personal Google account","status":"On request","summaryEligible":true,"note":"Pakistan in-app or provider plan; eligibility may differ from web plans. Included in a Google AI bundle; this is not a standalone Notebook subscription."}
   ],
   "grammarly": [
-    {"id":"grammarly-1","name":"Grammarly Premium","priceUsd":4.5,"duration":"1 month","access":"Seller claims private","status":"On request","summaryEligible":true,"note":""},
+    {"id":"grammarly-1","name":"Grammarly Premium","priceUsd":4.5,"duration":"1 month","access":"Seller claims private","status":"On request","summaryEligible":true,"note":""}
+  ],
+  "quillbot": [
+    {"id":"quillbot-1","name":"QuillBot Premium","priceUsd":2.24,"duration":"30 days","access":"One device; subtype unspecified","status":"On request","summaryEligible":true,"note":"One-device Premium access; login details cannot be changed. Confirm ownership and usage limits before payment."}
   ],
   "gamma": [
-    {"id":"gamma-1","name":"Gamma Pro","priceUsd":103.47,"duration":"1 year","access":"Seller claims private","status":"On request","summaryEligible":true,"note":""},
+    {"id":"gamma-1","name":"Gamma Pro","priceUsd":103.47,"duration":"1 year","access":"Seller claims private","status":"On request","summaryEligible":true,"note":""}
   ],
   "otter": [
     {"id":"otter-3","name":"Otter Pro (yearly)","priceUsd":112.02,"duration":"1 year","access":"Own app / Apple account subscription","status":"On request","summaryEligible":true,"note":"Pakistan in-app or provider plan; eligibility may differ from web plans."},
@@ -63,7 +72,7 @@ const toolPlans: Partial<Record<ToolId, ToolPlan[]>> = {
     {"id":"scispace-1","name":"Premium 1200 Credits","priceUsd":17.09,"duration":"1 month","access":"Private account","status":"On request","summaryEligible":true,"note":""}
   ],
   "semrush": [
-    {"id":"semrush-1","name":"Semrush Pro","priceUsd":6.75,"duration":"1 month","access":"Seller claims private","status":"On request","summaryEligible":true,"note":""},
+    {"id":"semrush-1","name":"Semrush Pro","priceUsd":6.75,"duration":"1 month","access":"Seller claims private","status":"On request","summaryEligible":true,"note":""}
   ],
   "adobe-firefly": [
     {"id":"adobe-firefly-1","name":"Adobe Firefly Mobile Monthly","priceUsd":5.85,"duration":"1 month","access":"Apple ID / official mobile in-app purchase","status":"On request","summaryEligible":true,"note":"Pakistan in-app or provider plan; eligibility may differ from web plans."},
@@ -71,6 +80,10 @@ const toolPlans: Partial<Record<ToolId, ToolPlan[]>> = {
   ],
   "heygen": [
     {"id":"heygen-2","name":"Creator","priceUsd":25.19,"duration":"1 month","access":"Private","status":"On request","summaryEligible":true,"note":"Confirm the exact plan and credits; some tier labels conflict."}
+  ],
+  "kling": [
+    {"id":"kling-1","name":"Standard","priceUsd":8.32,"duration":"1 month","access":"Private account","status":"On request","summaryEligible":true,"note":"Private monthly access. The listing describes 25-day replacement coverage; confirm the final support window and credit allowance before payment."},
+    {"id":"kling-pro-monthly","name":"Pro","priceUsd":31.49,"duration":"1 month","access":"Private account","status":"On request","summaryEligible":true,"note":"Private monthly access. The listing describes 25-day replacement coverage; confirm the final support window and credit allowance before payment."}
   ],
   "google-flow": [
     {"id":"google-flow-1","name":"Google AI Plus — includes Flow","priceUsd":6.3,"duration":"1 month","access":"Own Google account","status":"On request","summaryEligible":true,"note":"Pakistan in-app or provider plan; eligibility may differ from web plans. Included in a Google AI bundle; this is not a standalone Flow subscription."},
@@ -82,18 +95,39 @@ const toolPlans: Partial<Record<ToolId, ToolPlan[]>> = {
     {"id":"capcut-3","name":"Standard Yearly Subscription","priceUsd":31.04,"duration":"12 months","access":"Official Pakistan in-app purchase","status":"On request","summaryEligible":true,"note":"Pakistan in-app or provider plan; eligibility may differ from web plans. Confirm app/platform compatibility, account ownership and the full support period."},
     {"id":"capcut-4","name":"Pro","priceUsd":5.4,"duration":"1 month","access":"Pre-made account","status":"On request","summaryEligible":true,"note":"Confirm app/platform compatibility, account ownership and the full support period."},
     {"id":"capcut-5","name":"Pro","priceUsd":31.49,"duration":"6 months","access":"Pre-made account","status":"On request","summaryEligible":true,"note":"Confirm app/platform compatibility, account ownership and the full support period."},
-    {"id":"capcut-6","name":"Pro","priceUsd":58.48,"duration":"12 months","access":"Pre-made account","status":"On request","summaryEligible":true,"note":"Confirm app/platform compatibility, account ownership and the full support period."},
+    {"id":"capcut-6","name":"Pro","priceUsd":58.48,"duration":"12 months","access":"Pre-made account","status":"On request","summaryEligible":true,"note":"Confirm app/platform compatibility, account ownership and the full support period."}
   ],
   "udio": [
     {"id":"udio-1","name":"Udio Standard Monthly","priceUsd":13.05,"duration":"1 month","access":"Apple ID / official mobile in-app purchase","status":"On request","summaryEligible":true,"note":"Pakistan in-app or provider plan; eligibility may differ from web plans."},
     {"id":"udio-2","name":"Udio Standard Annual","priceUsd":112.02,"duration":"1 year total","access":"Apple ID / official mobile in-app purchase","status":"On request","summaryEligible":true,"note":"Pakistan in-app or provider plan; eligibility may differ from web plans."},
     {"id":"udio-3","name":"Udio Pro Monthly","priceUsd":35.54,"duration":"1 month","access":"Apple ID / official mobile in-app purchase","status":"On request","summaryEligible":true,"note":"Pakistan in-app or provider plan; eligibility may differ from web plans."}
   ],
+  "hailuo": [
+    {"id":"hailuo-2","name":"Hailuo Standard","priceUsd":11.25,"duration":"1 month","access":"Private account","status":"On request","summaryEligible":true,"note":"Private Standard access for one month. Confirm generation limits and the replacement/support period before payment."}
+  ],
   "cursor": [
-    {"id":"cursor-1","name":"Cursor Pro","priceUsd":177.7,"duration":"12 months","access":"Seller says own email; existing or new account","status":"On request","summaryEligible":true,"note":""},
+    {"id":"cursor-1","name":"Cursor Pro","priceUsd":177.7,"duration":"12 months","access":"Seller says own email; existing or new account","status":"On request","summaryEligible":true,"note":""}
+  ],
+  "replit": [
+    {"id":"replit-1","name":"Replit Core","priceUsd":78.73,"duration":"12 months","access":"Existing or new account; sharing unspecified","status":"On request","summaryEligible":true,"note":"Annual Core access on an existing or new account. Confirm ownership and usage credits; the listed support window is three months and must be agreed before payment."}
+  ],
+  "lovable": [
+    {"id":"lovable-2","name":"Lovable Pro — 100 credits","priceUsd":4.49,"duration":"1 month","access":"Full private, seller claim","status":"On request","summaryEligible":true,"note":"100-credit monthly private account. Confirm account ownership, renewal and replacement coverage before payment."}
+  ],
+  "bolt": [
+    {"id":"bolt-1","name":"Bolt.new Pro annual coupon","priceUsd":38.45,"duration":"1 year","access":"Private redemption on own account","status":"On request","summaryEligible":true,"note":"Annual Pro coupon for your own account. Confirm eligibility, token allowance and redemption conditions before payment."}
+  ],
+  "n8n": [
+    {"id":"n8n-2","name":"n8n Cloud Starter annual voucher","priceUsd":32.04,"duration":"1 year","access":"Own-account redemption","status":"On request","summaryEligible":true,"note":"Annual Cloud Starter voucher for your own account. Confirm redemption eligibility and execution limits; VPS hosting is not included."}
+  ],
+  "gumloop": [
+    {"id":"gumloop-1","name":"Gumloop Pro 20k Credits annual coupon","priceUsd":57.68,"duration":"1 year","access":"Own-account redemption","status":"On request","summaryEligible":true,"note":"Annual Pro 20k-credit coupon for your own account. Confirm credit reset rules, eligibility and redemption conditions before payment."}
   ],
   "taskade": [
     {"id":"taskade-1","name":"Taskade Pro (Monthly)","priceUsd":22.04,"duration":"1 month","access":"Direct in-app subscription on Apple account","status":"On request","summaryEligible":true,"note":"Pakistan in-app or provider plan; eligibility may differ from web plans."}
+  ],
+  "reclaim": [
+    {"id":"reclaim-1","name":"Reclaim.ai Starter coupon","priceUsd":21.78,"duration":"1 year","access":"Own-account redemption per catalog","status":"On request","summaryEligible":true,"note":"Annual Starter coupon for your own account. Confirm eligibility, allowance and redemption conditions before payment."}
   ],
   "manus": [
     {"id":"manus-1","name":"Manus Basic - Monthly","priceUsd":22.04,"duration":"1 month","access":"Direct in-app subscription","status":"On request","summaryEligible":true,"note":"Pakistan in-app or provider plan; eligibility may differ from web plans."},
@@ -101,7 +135,7 @@ const toolPlans: Partial<Record<ToolId, ToolPlan[]>> = {
   ],
   "genspark": [
     {"id":"genspark-1","name":"Plus Monthly 10K Credits","priceUsd":31.04,"duration":"1 month","access":"Own app / Apple account subscription","status":"On request","summaryEligible":true,"note":"Pakistan in-app or provider plan; eligibility may differ from web plans."},
-    {"id":"genspark-2","name":"Pro Monthly 300K Credits","priceUsd":674.37,"duration":"1 month","access":"Own app / Apple account subscription","status":"On request","summaryEligible":true,"note":"Pakistan in-app or provider plan; eligibility may differ from web plans."},
+    {"id":"genspark-2","name":"Pro Monthly 300K Credits","priceUsd":674.37,"duration":"1 month","access":"Own app / Apple account subscription","status":"On request","summaryEligible":true,"note":"Pakistan in-app or provider plan; eligibility may differ from web plans."}
   ],
   "monica": [
     {"id":"monica-1","name":"Monica Pro Monthly","priceUsd":13.05,"duration":"1 month","access":"Own app / Apple account","status":"On request","summaryEligible":true,"note":"Pakistan in-app or provider plan; eligibility may differ from web plans."},
@@ -130,11 +164,14 @@ const toolPlans: Partial<Record<ToolId, ToolPlan[]>> = {
   ],
   "julius": [
     {"id":"julius-1","name":"Basic Monthly","priceUsd":22.04,"duration":"1 month","access":"Own app / Apple account subscription","status":"On request","summaryEligible":true,"note":"Pakistan in-app or provider plan; eligibility may differ from web plans."},
-    {"id":"julius-2","name":"Basic Annually","priceUsd":224.49,"duration":"1 year","access":"Own app / Apple account subscription","status":"On request","summaryEligible":true,"note":"Pakistan in-app or provider plan; eligibility may differ from web plans."},
+    {"id":"julius-2","name":"Basic Annually","priceUsd":224.49,"duration":"1 year","access":"Own app / Apple account subscription","status":"On request","summaryEligible":true,"note":"Pakistan in-app or provider plan; eligibility may differ from web plans."}
   ],
   "adcreative": [
     {"id":"adcreative-1","name":"Pro Access (1 month)","priceUsd":17.55,"duration":"1 month","access":"Own app / Apple account subscription","status":"On request","summaryEligible":true,"note":"Pakistan in-app or provider plan; eligibility may differ from web plans."},
-    {"id":"adcreative-2","name":"Pro Access (1 week)","priceUsd":8.55,"duration":"1 week","access":"Own app / Apple account subscription","status":"On request","summaryEligible":true,"note":"Pakistan in-app or provider plan; eligibility may differ from web plans."},
+    {"id":"adcreative-2","name":"Pro Access (1 week)","priceUsd":8.55,"duration":"1 week","access":"Own app / Apple account subscription","status":"On request","summaryEligible":true,"note":"Pakistan in-app or provider plan; eligibility may differ from web plans."}
+  ],
+  "framer": [
+    {"id":"framer-1","name":"Framer Pro","priceUsd":32.39,"duration":"12 months","access":"Existing or new account; sharing unspecified","status":"On request","summaryEligible":true,"note":"Annual Pro access on an existing or new account. Confirm ownership and hosting limits; the listed support window is three months and must be agreed before payment."}
   ],
   "picsart": [
     {"id":"picsart-1","name":"Picsart Pro Monthly","priceUsd":3.15,"duration":"1 month","access":"Apple ID / official mobile in-app purchase","status":"On request","summaryEligible":true,"note":"Pakistan in-app or provider plan; eligibility may differ from web plans."},
@@ -149,6 +186,10 @@ const toolPlans: Partial<Record<ToolId, ToolPlan[]>> = {
   ],
   "dzine": [
     {"id":"dzine-1","name":"Master","priceUsd":22.49,"duration":"1 month","access":"Private","status":"On request","summaryEligible":true,"note":""}
+  ],
+  "openart": [
+    {"id":"openart-advanced-monthly","name":"Advanced","priceUsd":24.74,"duration":"1 month","access":"Private account","status":"On request","summaryEligible":true,"note":"Monthly Advanced access; confirm included credits. The listing describes 25-day replacement coverage and no credit top-up; confirm support terms before payment."},
+    {"id":"openart-infinite-monthly","name":"Infinite","priceUsd":49.48,"duration":"1 month","access":"Private account","status":"On request","summaryEligible":true,"note":"Monthly Infinite access; confirm included credits. The listing describes 25-day replacement coverage and no credit top-up; confirm support terms before payment."}
   ],
   "seaart": [
     {"id":"seaart-1","name":"Beginner Plan Monthly","priceUsd":5.85,"duration":"1 month","access":"Apple ID / official mobile in-app purchase","status":"On request","summaryEligible":true,"note":"Pakistan in-app or provider plan; eligibility may differ from web plans."},
@@ -170,7 +211,7 @@ const toolPlans: Partial<Record<ToolId, ToolPlan[]>> = {
   ],
   "filmora": [
     {"id":"filmora-1","name":"Annual Subscription","priceUsd":58.03,"duration":"1 year total","access":"Apple ID / official in-app purchase","status":"On request","summaryEligible":true,"note":"Pakistan in-app or provider plan; eligibility may differ from web plans. macOS in-app and portal offers differ; confirm version, AI allowance and upgrade rights."},
-    {"id":"filmora-2","name":"Lifetime License","priceUsd":89.53,"duration":"Lifetime license as labeled","access":"Apple ID / official in-app purchase","status":"On request","summaryEligible":true,"note":"Pakistan in-app or provider plan; eligibility may differ from web plans. macOS in-app and portal offers differ; confirm version, AI allowance and upgrade rights."},
+    {"id":"filmora-2","name":"Lifetime License","priceUsd":89.53,"duration":"Lifetime license as labeled","access":"Apple ID / official in-app purchase","status":"On request","summaryEligible":true,"note":"Pakistan in-app or provider plan; eligibility may differ from web plans. macOS in-app and portal offers differ; confirm version, AI allowance and upgrade rights."}
   ],
   "pollo": [
     {"id":"pollo-1","name":"Lite Monthly","priceUsd":17.55,"duration":"1 month","access":"Apple ID / official in-app purchase","status":"On request","summaryEligible":true,"note":"Pakistan in-app or provider plan; eligibility may differ from web plans."},
@@ -186,18 +227,39 @@ const toolPlans: Partial<Record<ToolId, ToolPlan[]>> = {
     {"id":"naturalreader-2","name":"Plus Monthly","priceUsd":26.54,"duration":"1 month","access":"Apple ID / official in-app purchase","status":"On request","summaryEligible":true,"note":"Pakistan in-app or provider plan; eligibility may differ from web plans. Personal reading plan; commercial voiceover rights require separate confirmation."},
     {"id":"naturalreader-3","name":"Premium Yearly","priceUsd":41.39,"duration":"1 year total","access":"Apple ID / official in-app purchase","status":"On request","summaryEligible":true,"note":"Pakistan in-app or provider plan; eligibility may differ from web plans. Personal reading plan; commercial voiceover rights require separate confirmation."}
   ],
+  "warp": [
+    {"id":"warp-1","name":"Warp Build annual voucher","priceUsd":32.04,"duration":"1 year","access":"Private redemption on own account","status":"On request","summaryEligible":true,"note":"Annual Build voucher for your own account. Confirm eligibility, monthly credits and redemption conditions before payment."}
+  ],
+  "magic-patterns": [
+    {"id":"magic-patterns-1","name":"Magic Patterns Starter annual coupon","priceUsd":28.19,"duration":"1 year","access":"Private redemption on own account; card/VCC required","status":"On request","summaryEligible":true,"note":"Annual Starter/Hobby coupon for your own account, not Business. A card or virtual card is required; confirm redemption eligibility before payment."}
+  ],
   "antigravity": [
     {"id":"antigravity-1","name":"Google AI Pro including Antigravity","priceUsd":25.19,"duration":"1 month","access":"Direct Google account subscription; rate limits apply","status":"On request","summaryEligible":true,"note":"Pakistan in-app or provider plan; eligibility may differ from web plans. Included in a Google AI bundle; usage limits apply."},
     {"id":"antigravity-2","name":"Google AI Ultra 5x including Antigravity","priceUsd":98.97,"duration":"1 month","access":"Direct Google account subscription; rate limits apply","status":"On request","summaryEligible":true,"note":"Pakistan in-app or provider plan; eligibility may differ from web plans. Included in a Google AI bundle; usage limits apply."},
     {"id":"antigravity-3","name":"Google AI Ultra 20x including Antigravity","priceUsd":251.48,"duration":"1 month","access":"Direct Google account subscription; rate limits apply","status":"On request","summaryEligible":true,"note":"Pakistan in-app or provider plan; eligibility may differ from web plans. Included in a Google AI bundle; usage limits apply."}
   ],
   "sudowrite": [
-    {"id":"sudowrite-1","name":"Professional Monthly","priceUsd":44.54,"duration":"1 month","access":"Own app / Apple account subscription","status":"On request","summaryEligible":true,"note":"Pakistan in-app or provider plan; eligibility may differ from web plans."},
+    {"id":"sudowrite-1","name":"Professional Monthly","priceUsd":44.54,"duration":"1 month","access":"Own app / Apple account subscription","status":"On request","summaryEligible":true,"note":"Pakistan in-app or provider plan; eligibility may differ from web plans."}
+  ],
+  "knowt": [
+    {"id":"knowt-1","name":"Student Ultra Monthly","priceUsd":17.55,"duration":"1 month","access":"Own app / Apple account subscription","status":"On request","summaryEligible":true,"note":"Pakistan in-app Student Ultra subscription. Separate same-name offers differ by account; confirm checkout eligibility and the applicable plan before payment."},
+    {"id":"knowt-2","name":"Student Ultra Monthly","priceUsd":22.04,"duration":"1 month","access":"Own app / Apple account subscription","status":"On request","summaryEligible":true,"note":"Pakistan in-app Student Ultra subscription. Separate same-name offers differ by account; confirm checkout eligibility and the applicable plan before payment."},
+    {"id":"knowt-3","name":"Student Ultra Annual","priceUsd":58.03,"duration":"1 year","access":"Own app / Apple account subscription","status":"On request","summaryEligible":true,"note":"Pakistan in-app Student Ultra subscription. Separate same-name offers differ by account; confirm checkout eligibility and the applicable plan before payment."},
+    {"id":"knowt-4","name":"Student Ultra Annual","priceUsd":112.02,"duration":"1 year","access":"Own app / Apple account subscription","status":"On request","summaryEligible":true,"note":"Pakistan in-app Student Ultra subscription. Separate same-name offers differ by account; confirm checkout eligibility and the applicable plan before payment."},
+    {"id":"knowt-5","name":"Student Ultra Annual","priceUsd":134.52,"duration":"1 year","access":"Own app / Apple account subscription","status":"On request","summaryEligible":true,"note":"Pakistan in-app Student Ultra subscription. Separate same-name offers differ by account; confirm checkout eligibility and the applicable plan before payment."},
+    {"id":"knowt-6","name":"Student Ultra Annual","priceUsd":179.5,"duration":"1 year","access":"Own app / Apple account subscription","status":"On request","summaryEligible":true,"note":"Pakistan in-app Student Ultra subscription. Separate same-name offers differ by account; confirm checkout eligibility and the applicable plan before payment."}
   ],
   "studyfetch": [
     {"id":"studyfetch-1","name":"StudyFetch Premium Monthly","priceUsd":22.04,"duration":"1 month","access":"Own app / Apple account subscription","status":"On request","summaryEligible":true,"note":"Pakistan in-app or provider plan; eligibility may differ from web plans."},
     {"id":"studyfetch-2","name":"StudyFetch Premium Quarterly","priceUsd":35.54,"duration":"3 months","access":"Own app / Apple account subscription","status":"On request","summaryEligible":true,"note":"Pakistan in-app or provider plan; eligibility may differ from web plans."},
     {"id":"studyfetch-3","name":"StudyFetch Premium Yearly","priceUsd":112.02,"duration":"1 year","access":"Own app / Apple account subscription","status":"On request","summaryEligible":true,"note":"Pakistan in-app or provider plan; eligibility may differ from web plans."}
+  ],
+  "turbo": [
+    {"id":"turbo-1","name":"Turbolearn Unlimited (1 Month)","priceUsd":17.55,"duration":"1 month","access":"Own app / Apple account subscription","status":"On request","summaryEligible":true,"note":"Pakistan in-app Unlimited subscription. Separate same-name offers differ by account; confirm checkout eligibility and the applicable plan before payment."},
+    {"id":"turbo-2","name":"Turbolearn Unlimited (1 Month)","priceUsd":22.04,"duration":"1 month","access":"Own app / Apple account subscription","status":"On request","summaryEligible":true,"note":"Pakistan in-app Unlimited subscription. Separate same-name offers differ by account; confirm checkout eligibility and the applicable plan before payment."},
+    {"id":"turbo-4","name":"Turbolearn Unlimited (1 Year)","priceUsd":89.53,"duration":"1 year","access":"Own app / Apple account subscription","status":"On request","summaryEligible":true,"note":"Pakistan in-app Unlimited subscription. Separate same-name offers differ by account; confirm checkout eligibility and the applicable plan before payment."},
+    {"id":"turbo-5","name":"Turbolearn Unlimited (1 Year)","priceUsd":112.02,"duration":"1 year","access":"Own app / Apple account subscription","status":"On request","summaryEligible":true,"note":"Pakistan in-app Unlimited subscription. Separate same-name offers differ by account; confirm checkout eligibility and the applicable plan before payment."},
+    {"id":"turbo-6","name":"Turbolearn Unlimited (1 Year)","priceUsd":134.52,"duration":"1 year","access":"Own app / Apple account subscription","status":"On request","summaryEligible":true,"note":"Pakistan in-app Unlimited subscription. Separate same-name offers differ by account; confirm checkout eligibility and the applicable plan before payment."}
   ],
   "gauth": [
     {"id":"gauth-1","name":"Gauth PLUS - Monthly","priceUsd":2.25,"duration":"1 month","access":"Own app / Apple account subscription","status":"On request","summaryEligible":true,"note":"Pakistan in-app or provider plan; eligibility may differ from web plans."},
@@ -207,7 +269,11 @@ const toolPlans: Partial<Record<ToolId, ToolPlan[]>> = {
   "immersive-translate": [
     {"id":"immersive-translate-1","name":"Monthly Pro","priceUsd":13.05,"duration":"1 month","access":"Own app / Apple account subscription","status":"On request","summaryEligible":true,"note":"Pakistan in-app or provider plan; eligibility may differ from web plans."},
     {"id":"immersive-translate-2","name":"Annual Pro","priceUsd":89.53,"duration":"1 year","access":"Own app / Apple account subscription","status":"On request","summaryEligible":true,"note":"Pakistan in-app or provider plan; eligibility may differ from web plans."},
-    {"id":"immersive-translate-3","name":"Max Monthly Membership","priceUsd":35.54,"duration":"1 month","access":"Own app / Apple account subscription","status":"On request","summaryEligible":true,"note":"Pakistan in-app or provider plan; eligibility may differ from web plans."},
+    {"id":"immersive-translate-3","name":"Max Monthly Membership","priceUsd":35.54,"duration":"1 month","access":"Own app / Apple account subscription","status":"On request","summaryEligible":true,"note":"Pakistan in-app or provider plan; eligibility may differ from web plans."}
+  ],
+  "granola": [
+    {"id":"granola-1","name":"Granola Business coupon","priceUsd":14.09,"duration":"3 months","access":"Own-account redemption per catalog","status":"On request","summaryEligible":true,"note":"Business coupon for your own account. Confirm eligibility, allowance and redemption conditions before payment."},
+    {"id":"granola-2","name":"Granola Business coupon","priceUsd":21.78,"duration":"1 year","access":"Own-account redemption per catalog","status":"On request","summaryEligible":true,"note":"Business coupon for your own account. Confirm eligibility, allowance and redemption conditions before payment."}
   ],
   "askyourpdf": [
     {"id":"askyourpdf-1","name":"Premium Monthly","priceUsd":13.05,"duration":"1 month","access":"Direct in-app subscription","status":"On request","summaryEligible":true,"note":"Pakistan in-app or provider plan; eligibility may differ from web plans."},
@@ -218,7 +284,7 @@ const toolPlans: Partial<Record<ToolId, ToolPlan[]>> = {
   "speak": [
     {"id":"speak-1","name":"Monthly Premium","priceUsd":13.05,"duration":"1 month","access":"Own app / Apple account subscription","status":"On request","summaryEligible":true,"note":"Pakistan in-app or provider plan; eligibility may differ from web plans."},
     {"id":"speak-2","name":"Annual Premium","priceUsd":58.03,"duration":"1 year","access":"Own app / Apple account subscription","status":"On request","summaryEligible":true,"note":"Pakistan in-app or provider plan; eligibility may differ from web plans."},
-    {"id":"speak-3","name":"Monthly Premium Plus","priceUsd":67.03,"duration":"1 month","access":"Own app / Apple account subscription","status":"On request","summaryEligible":true,"note":"Pakistan in-app or provider plan; eligibility may differ from web plans."},
+    {"id":"speak-3","name":"Monthly Premium Plus","priceUsd":67.03,"duration":"1 month","access":"Own app / Apple account subscription","status":"On request","summaryEligible":true,"note":"Pakistan in-app or provider plan; eligibility may differ from web plans."}
   ],
   "elsa": [
     {"id":"elsa-1","name":"Monthly","priceUsd":4.27,"duration":"1 month","access":"Own app / Apple account subscription","status":"On request","summaryEligible":true,"note":"Pakistan in-app or provider plan; eligibility may differ from web plans."},
