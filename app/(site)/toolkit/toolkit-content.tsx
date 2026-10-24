@@ -6,6 +6,7 @@ import { ArrowRight, ArrowUpRight, CheckCheck, ChevronDown, ChevronRight, Copy, 
 import { tools, ToolLogo, type ToolId } from "../../catalog";
 import { emailInquiryUrl, whatsappUrl } from "../../business";
 import { notifyInquiryPrepared } from "../../inquiry-metrics";
+import { getToolPriceLabel } from "../../sample-plans";
 
 const toolkitKey = "getaitools-toolkit";
 const toolIds = new Set<string>(tools.map((tool) => tool.id));
@@ -43,7 +44,7 @@ export default function ToolkitContent() {
   }, []);
 
   const selectedTools = tools.filter((tool) => selected.includes(tool.id));
-  const inquiry = `Hi GetAI Tools! I'd like a quote for:\n\n${selectedTools.map((tool, index) => `${index + 1}. ${tool.name}`).join("\n")}\n\nPreferred duration: ${duration}\nCurrency: USD\n\nPlease confirm availability, the exact plan, final USD price, access method, activation estimate, renewal, support, and refund/cancellation terms before payment.\n\nFrom getaitools.shop`;
+  const inquiry = `Hi GetAI Tools! I'd like a quote for:\n\n${selectedTools.map((tool, index) => `${index + 1}. ${tool.name} — ${getToolPriceLabel(tool.id, duration)}`).join("\n")}\n\nPreferred duration: ${duration}\nCurrency: USD\n\nPlease confirm availability, the exact plan, final USD price, access method, activation estimate, renewal, support, and refund/cancellation terms before payment.\n\nFrom getaitools.shop`;
 
   function removeTool(id: ToolId, name: string) {
     let next = selected.filter((item) => item !== id);
@@ -99,7 +100,7 @@ export default function ToolkitContent() {
         <div className="kit-items">{selectedTools.map((tool) => <article className="kit-item" key={tool.id} style={{ "--tool-accent": tool.accent } as CSSProperties}>
           <Link className={`kit-logo product-${tool.id}`} href={`/tools/${tool.id}`} aria-label={`Explore ${tool.name}`}><ToolLogo id={tool.id} /></Link>
           <div className="kit-item-copy"><span>{tool.category}</span><h3><Link href={`/tools/${tool.id}`}>{tool.name}</Link></h3><p>{tool.shortDescription}</p><Link className="kit-item-link" href={`/tools/${tool.id}`}>Tool details <ArrowUpRight size={13} /></Link></div>
-          <span className="kit-item-price">Quote in USD</span><button className="kit-remove icon-button" aria-label={`Remove ${tool.name} from toolkit`} onClick={() => removeTool(tool.id, tool.name)}><X size={17} /></button>
+          <span className="kit-item-price">{getToolPriceLabel(tool.id, duration)}</span><button className="kit-remove icon-button" aria-label={`Remove ${tool.name} from toolkit`} onClick={() => removeTool(tool.id, tool.name)}><X size={17} /></button>
         </article>)}</div>
         <div className="kit-selection-note"><Sparkles size={19} /><p>Your toolkit is a selection of tools you are interested in. Confirm each plan, availability, and access details before payment.</p></div>
       </section>

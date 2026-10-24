@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 const faqs = [
   ["How do I find the right AI tool?", "Start with what you want to do. Use the categories to explore writing, research, design, coding, and more, or search for a name. The collection shows ten tools per page. Open a tool’s page for its overview, capabilities, and related tools."],
-  ["How much do the tools cost?", "All pricing is quoted in US dollars (USD). Add the tools you are interested in to your toolkit and prepare an inquiry for current plans, availability, and pricing. Confirm the final quote before payment."],
+  ["How much do the tools cost?", "Listed plan prices are shown in US dollars (USD). Open a tool to compare its plan, duration, and access details. Where no price is listed, request a quote. Confirm availability and the final price before payment."],
   ["How does ordering work?", "Choose your tools, build your toolkit, and open your inquiry in WhatsApp or email. Review and send it to confirm the plan, duration, access details, activation estimate, support terms, and final USD price before payment. Opening an inquiry does not place an order."],
   ["Can I choose more than one tool?", "Yes. Your toolkit can include several different tools. Add everything you are interested in and prepare a single inquiry for the full selection. You can remove tools from your toolkit at any time."],
   ["Can I request monthly or annual plans?", "You can choose Monthly or Annual as your preferred duration when preparing your inquiry. This is a preference for the quote; the available plans and durations for each tool still need to be confirmed."],

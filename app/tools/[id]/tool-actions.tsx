@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ArrowRight, Check, Plus } from "lucide-react";
 import { tools, type ToolId } from "../../catalog";
 import { emailInquiryUrl, whatsappUrl } from "../../business";
+import { getToolPriceLabel } from "../../sample-plans";
 
 const toolkitKey = "getaitools-toolkit";
 const toolIds = new Set<string>(tools.map((tool) => tool.id));
@@ -21,7 +22,7 @@ export default function ToolActions({ id, name }: { id: ToolId; name: string }) 
   const [restored, setRestored] = useState(false);
   const [message, setMessage] = useState("");
   const [storageError, setStorageError] = useState(false);
-  const inquiry = `Hi GetAI Tools! I'm interested in ${name}. Please confirm available plans, duration, final pricing in USD, access method, activation estimate, renewal, support, and refund/cancellation terms before payment.\n\nFrom https://getaitools.shop/tools/${id}`;
+  const inquiry = `Hi GetAI Tools! I'm interested in ${name}.\nListed pricing: ${getToolPriceLabel(id)}\n\nPlease confirm availability, the exact plan, duration, final pricing in USD, access method, activation estimate, renewal, support, and refund/cancellation terms before payment.\n\nFrom https://getaitools.shop/tools/${id}`;
 
   useEffect(() => {
     setMessage("");

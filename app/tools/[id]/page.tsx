@@ -9,7 +9,8 @@ import BusinessLinks from "../../business-links";
 import { getCategorySlug } from "../../catalog-seo";
 import { BreadcrumbJsonLd, JsonLd, siteUrl, socialMetadata } from "../../seo";
 import { toolContent } from "../../tool-content";
-import { samplePlans } from "../../sample-plans";
+import { formatUsd, getToolPlans, getToolPriceLabel, pricingUpdatedOn } from "../../sample-plans";
+import { whatsappUrl } from "../../business";
 
 type ToolPageProps = { params: Promise<{ id: string }> };
 
@@ -55,6 +56,7 @@ export default async function ToolPage({ params }: ToolPageProps) {
   const relatedTools = getRelatedTools(tool);
   const content = toolContent[tool.id];
   const categoryPath = `/categories/${getCategorySlug(tool.category)}`;
+  const plans = getToolPlans(tool.id);
 
   return <>
     <BreadcrumbJsonLd items={[{ name: "AI tools", path: "/" }, { name: tool.category, path: categoryPath }, { name: tool.name, path: `/tools/${tool.id}` }]} />
@@ -98,7 +100,7 @@ export default async function ToolPage({ params }: ToolPageProps) {
             <section><h2>What is {tool.name} useful for?</h2><p>{content.overview}</p><h3>Who it can suit</h3><ul>{content.bestFor.map((item) => <li key={item}>{item}</li>)}</ul></section>
             <section><h2>{content.exampleWorkflow.title}</h2><p className="tool-editorial-note">An example workflow to help you evaluate the tool. Results depend on your inputs and the plan you use.</p><ol>{content.exampleWorkflow.steps.map((step) => <li key={step}>{step}</li>)}</ol></section>
             <section><h2>Before choosing a {tool.name} plan</h2><ul>{content.considerations.map((item) => <li key={item}>{item}</li>)}</ul><p>Ask for the exact plan, included limits, access method, activation estimate, renewal, support and refund terms before payment. <Link href="/delivery">Read delivery and support information</Link>.</p></section>
-            <section className="tool-sample-plans" data-nosnippet><span className="eyebrow">SAMPLE PRICING PREVIEW</span><h2>Example USD plans</h2><p>These example amounts illustrate the plan layout. They are not available offers, provider prices or a final quote. Ask us for confirmed pricing before payment.</p><div>{samplePlans.map((plan) => <article key={plan.name}><h3>{plan.name}</h3><strong>${plan.priceUsd.toFixed(2)} <span>USD</span></strong><p>{plan.duration} · sample only</p></article>)}</div></section>
+            <section className="tool-sample-plans tool-usd-plans" id="tool-pricing"><span className="eyebrow">PLANS &amp; PRICING</span><h2>{plans.length ? `${tool.name} plans in USD` : "Request pricing"}</h2><p>{plans.length ? "Prices are USD totals for the duration shown. Confirm the exact plan, availability, account access and support terms before payment." : `Contact us for available ${tool.name} plans, duration, access details and a USD quote.`}</p>{plans.length > 0 && <><p className="tool-editorial-note">Prices updated <time dateTime={pricingUpdatedOn}>{new Intl.DateTimeFormat("en", { dateStyle: "long", timeZone: "UTC" }).format(new Date(`${pricingUpdatedOn}T00:00:00Z`))}</time>.</p><div>{plans.map((plan) => <article key={plan.id}><span className="tool-price-status">Confirm availability</span><h3>{plan.name}</h3><strong>{formatUsd(plan.priceUsd)} <span>USD</span></strong><p className="tool-price-term">{plan.duration}</p><p>{plan.access}</p>{plan.note && <p>{plan.note}</p>}<a className="tool-price-inquiry" href={whatsappUrl(`Hi GetAI Tools! I'd like to confirm this ${tool.name} plan:\n\nPlan: ${plan.name}\nListed price: ${formatUsd(plan.priceUsd)} USD\nDuration: ${plan.duration}\nAccess: ${plan.access}\n\nPlease confirm availability, included limits, activation, renewal, support and refund terms before payment.\n\nFrom https://getaitools.shop/tools/${tool.id}#tool-pricing`)} target="_blank" rel="noopener noreferrer">Ask about this plan <ArrowUpRight size={14} /></a></article>)}</div></>}</section>
             <section className="tool-official-sources"><h2>Official information</h2><p>Product information reviewed on <time dateTime={content.reviewedOn}>{new Intl.DateTimeFormat("en", { dateStyle: "long", timeZone: "UTC" }).format(new Date(`${content.reviewedOn}T00:00:00Z`))}</time>. Features and plan details can change; check the provider’s current information.</p><ul>{content.sources.map((source) => <li key={source.url}><a href={source.url} target="_blank" rel="noopener noreferrer">{source.title} <ArrowUpRight size={13} /></a></li>)}</ul>{(tool.id === "chatgpt" || tool.id === "claude") && <p><Link href="/compare/chatgpt-vs-claude">Compare ChatGPT and Claude for writing</Link></p>}</section>
           </div>}
         </div>
@@ -106,8 +108,9 @@ export default async function ToolPage({ params }: ToolPageProps) {
         <aside className="tool-plan" id="tool-plan" aria-labelledby="tool-plan-title">
           <span className="tool-plan-label"><span className="status-dot" /> YOUR PLAN, YOUR POSSIBILITIES</span>
           <h2 id="tool-plan-title">Good tools.<br /><span>The right fit.</span></h2>
-          <div className="tool-plan-currency"><span>PRICING</span><strong>Quote in USD <span>$</span></strong></div>
+          <div className="tool-plan-currency"><span>PRICING IN USD</span><strong className="tool-price-summary">{getToolPriceLabel(tool.id)}</strong></div>
           <p className="tool-plan-copy">Request current plans, availability, and access details for {tool.name} before you decide.</p>
+          {plans.length > 0 && <a className="text-link tool-price-jump" href="#tool-pricing">View all USD plans <ArrowRight size={14} /></a>}
           <ul className="tool-plan-steps"><li><Check size={15} /> Request the exact plan and USD quote</li><li><Check size={15} /> Confirm access and activation</li><li><Check size={15} /> Review renewal, support and refund terms</li></ul>
           <ToolActions id={tool.id} name={tool.name} />
           <p className="tool-plan-footnote">Explore first. Confirm your plan and final price before payment.</p>
