@@ -72,13 +72,31 @@ export default async function ToolPage({ params }: ToolPageProps) {
     <main className="tool-page" style={{ "--tool-accent": tool.accent } as CSSProperties}>
       <nav className="tool-breadcrumbs wrap" aria-label="Breadcrumb"><Link href="/"><ArrowLeft size={13} /> AI tools</Link><ChevronRight size={12} /><Link href={categoryPath}>{tool.category}</Link><ChevronRight size={12} /><span aria-current="page">{tool.name}</span></nav>
 
-      <section className="tool-hero wrap" aria-labelledby="tool-title">
+      <section className="tool-pricing-header wrap" aria-labelledby="tool-title">
+        <div className="tool-pricing-identity"><span className="tool-icon"><ToolLogo id={tool.id} /></span><div><h1 className="tool-title" id="tool-title">{tool.name}<span>.</span></h1><span className="tool-maker">{tool.category}<small>By {tool.maker}</small></span></div></div>
+        <div className="tool-pricing-overview" aria-label={`${tool.name} pricing in USD`}><span>USD PRICING</span><strong>{getToolPriceLabel(tool.id)}</strong>{plans.length > 0 && <small>{plans.length} {plans.length === 1 ? "plan" : "plans"} to compare</small>}</div>
+      </section>
+
+      <div className="tool-editorial tool-top-pricing wrap">
+        <section className="tool-sample-plans tool-usd-plans" id="tool-pricing">
+          <div className="tool-pricing-section-heading"><div><span className="eyebrow">PLANS &amp; PRICING</span><h2>{plans.length ? "Choose your plan" : pricingModel ? `${tool.name} pricing` : "Request pricing"}</h2><p>{plans.length ? "USD prices cover the duration shown. Fees and taxes are itemized at checkout. Confirm availability and access before payment." : pricingModel?.description || `Contact us for available ${tool.name} plans, duration, access details and a USD quote.`}</p></div>{plans.length > 0 && <p className="tool-pricing-updated">Updated <time dateTime={pricingUpdatedOn}>{new Intl.DateTimeFormat("en", { dateStyle: "long", timeZone: "UTC" }).format(new Date(`${pricingUpdatedOn}T00:00:00Z`))}</time></p>}</div>
+          {plans.length > 0 && <div className="tool-price-grid">{plans.map((plan) => <article key={plan.id}>
+            <span className="tool-price-status">Confirm availability</span>
+            <h3>{plan.name}</h3>
+            <strong className="tool-price-amount">{formatUsd(plan.priceUsd)} <span>USD</span></strong>
+            <p className="tool-price-term">{plan.duration}</p>
+            <p className="tool-price-access">{plan.access}</p>
+            <a className="tool-price-inquiry" href={`/checkout?tool=${encodeURIComponent(tool.id)}&plan=${encodeURIComponent(plan.id)}`} target="_blank" rel="noopener noreferrer" aria-label={`Continue to checkout: ${tool.name}, ${plan.name}, ${formatUsd(plan.priceUsd)} USD, ${plan.duration}`}>Continue to checkout <ArrowUpRight size={17} /></a>
+            {plan.note && <details className="tool-price-notes"><summary>Plan details &amp; conditions</summary><p>{plan.note}</p></details>}
+          </article>)}</div>}
+          {!plans.length && <>{pricingModel && <p><a className="text-link" href={pricingModel.sourceUrl} target="_blank" rel="noopener noreferrer">View provider pricing <ArrowUpRight size={15} /></a></p>}<a className="text-link tool-price-request" href={whatsappUrl(pricingModel?.kind === "free" ? `Hi GetAI Tools! I'd like help setting up ${tool.name}. I understand provider access is free and hosting, API usage or setup services may cost extra.\n\nFrom https://getaitools.shop/tools/${tool.id}#tool-pricing` : `Hi GetAI Tools! Please send available ${tool.name} plans, duration, access details and current pricing in USD.\n\nFrom https://getaitools.shop/tools/${tool.id}#tool-pricing`)} target="_blank" rel="noopener noreferrer">{pricingModel?.kind === "free" ? "Ask about setup" : "Request a USD quote"} <ArrowUpRight size={15} /></a></>}
+        </section>
+      </div>
+
+      <section className="tool-hero tool-overview-hero wrap" aria-labelledby="tool-overview-title">
         <div className="tool-intro">
           <div className="eyebrow section-eyebrow"><span className="section-line" /> YOUR NEXT ADVANTAGE</div>
-          <div className="tool-identity"><span className="tool-icon"><ToolLogo id={tool.id} /></span><span className="tool-maker">{tool.category}<small>By {tool.maker}</small></span></div>
-          <h1 className="tool-title" id="tool-title">{tool.name}<span>.</span></h1>
-          <div className="tool-hero-price" aria-label={`${tool.name} pricing in USD`}><span>PRICING IN USD</span><strong>{getToolPriceLabel(tool.id)}</strong></div>
-          <p className="tool-lede">{tool.shortDescription}</p>
+          <h2 className="tool-lede" id="tool-overview-title">{tool.shortDescription}</h2>
           <p className="tool-description">{tool.description}</p>
           <div className="tool-hero-actions"><a className="button button-primary" href="#tool-pricing">{plans.length || pricingModel ? "View pricing" : "Request pricing"} <ArrowUpRight size={18} /></a><Link className="text-link" href="/#tools">Keep exploring <ArrowRight size={16} /></Link></div>
         </div>
@@ -90,10 +108,6 @@ export default async function ToolPage({ params }: ToolPageProps) {
           <div className="tool-art-bottom"><span>{tool.tag}</span><span>MORE POSSIBLE. <Sparkles size={13} /></span></div>
         </div>
       </section>
-
-      <div className="tool-editorial tool-top-pricing wrap">
-        <section className="tool-sample-plans tool-usd-plans" id="tool-pricing"><span className="eyebrow">PLANS &amp; PRICING</span><h2>{plans.length ? `${tool.name} plans in USD` : pricingModel ? `${tool.name} pricing` : "Request pricing"}</h2><p>{plans.length ? "Prices are USD totals for the duration shown. Confirm the exact plan, availability, account access and support terms before payment." : pricingModel?.description || `Contact us for available ${tool.name} plans, duration, access details and a USD quote.`}</p>{plans.length > 0 && <><p className="tool-editorial-note">Prices updated <time dateTime={pricingUpdatedOn}>{new Intl.DateTimeFormat("en", { dateStyle: "long", timeZone: "UTC" }).format(new Date(`${pricingUpdatedOn}T00:00:00Z`))}</time>.</p><div>{plans.map((plan) => <article key={plan.id}><span className="tool-price-status">Confirm availability</span><h3>{plan.name}</h3><strong>{formatUsd(plan.priceUsd)} <span>USD</span></strong><p className="tool-price-term">{plan.duration}</p><p>{plan.access}</p>{plan.note && <p>{plan.note}</p>}<a className="tool-price-inquiry" href={`/checkout?tool=${encodeURIComponent(tool.id)}&plan=${encodeURIComponent(plan.id)}`} target="_blank" rel="noopener noreferrer">Continue to checkout <ArrowUpRight size={14} /></a></article>)}</div></>}{!plans.length && <>{pricingModel && <p><a className="text-link" href={pricingModel.sourceUrl} target="_blank" rel="noopener noreferrer">View provider pricing <ArrowUpRight size={15} /></a></p>}<a className="text-link tool-price-request" href={whatsappUrl(pricingModel?.kind === "free" ? `Hi GetAI Tools! I'd like help setting up ${tool.name}. I understand provider access is free and hosting, API usage or setup services may cost extra.\n\nFrom https://getaitools.shop/tools/${tool.id}#tool-pricing` : `Hi GetAI Tools! Please send available ${tool.name} plans, duration, access details and current pricing in USD.\n\nFrom https://getaitools.shop/tools/${tool.id}#tool-pricing`)} target="_blank" rel="noopener noreferrer">{pricingModel?.kind === "free" ? "Ask about setup" : "Request a USD quote"} <ArrowUpRight size={15} /></a></>}</section>
-      </div>
 
       <div className="tool-facts wrap" aria-label="Tool overview"><div><Layers3 size={17} /><span>MADE FOR<strong>{tool.category}</strong></span></div><div><Sparkles size={17} /><span>DEVELOPED BY<strong>{tool.maker}</strong></span></div><div><ShoppingBag size={17} /><span>YOUR NEXT STEP<strong>Request a quote in USD</strong></span></div></div>
 
