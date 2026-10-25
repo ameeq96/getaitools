@@ -34,7 +34,8 @@ export function GET(request: Request) {
   if (!secret || secret.length < 32) return Response.json({ error: "Checkout is temporarily unavailable. Please request a quote." }, { status: 503, headers });
   const selection = Buffer.from(JSON.stringify({ ...selectedPlan, exp: Math.floor(Date.now() / 1000) + 600 })).toString("base64url");
   const signature = createHmac("sha256", secret).update(selection).digest("base64url");
-  const checkoutUrl = new URL("https://opplexify.com/ai-checkout");
+  const checkoutUrl = new URL("https://opplexify.com/checkout");
+  checkoutUrl.searchParams.set("source", "getaitools");
   checkoutUrl.searchParams.set("selection", selection);
   checkoutUrl.searchParams.set("signature", signature);
   return new Response(null, { status: 307, headers: { ...headers, Location: checkoutUrl.toString() } });
