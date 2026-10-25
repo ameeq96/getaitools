@@ -1606,7 +1606,7 @@ const toolPlans: Partial<Record<ToolId, ToolPlan[]>> = {
   ],
   "numerous": [
     {"id":"numerous-official50-personal-monthly-da5693","name":"Personal","priceUsd":9.5,"duration":"1 month","access":"Plan access; activation method confirmed before payment","status":"On request","summaryEligible":true,"note":"Plan basis: one user/month. Includes 1 million characters per month. Confirm access, limits and renewal before payment."},
-    {"id":"numerous-official50-pro-monthly-e540b3","name":"Pro","priceUsd":19.5,"duration":"1 month","access":"Plan access; activation method confirmed before payment","status":"On request","summaryEligible":true,"note":"Plan basis: minimum 3-user workspace/month. The displayed total covers 3 seats; additional users cost extra. Confirm access, usage limits and renewal before payment."},
+    {"id":"numerous-official50-pro-monthly-e540b3","name":"Pro","priceUsd":19.5,"duration":"1 month","access":"Plan access; activation method confirmed before payment","status":"On request","summaryEligible":true,"note":"Plan basis: account/month. Includes 5 million characters per month, shareable with up to 3 users. Confirm access, usage limits and renewal before payment."},
     {"id":"numerous-official50-enterprise-3-seat-minimum-monthly-522687","name":"Enterprise — 3-seat minimum","priceUsd":15,"duration":"1 month","access":"Per 3-seat team/month; access confirmed before payment","status":"On request","summaryEligible":true,"note":"Plan basis: minimum 3-user workspace/month. The displayed total covers 3 seats; additional users cost extra. Confirm access, usage limits and renewal before payment."}
   ],
   "knime": [
