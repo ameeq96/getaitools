@@ -22,7 +22,9 @@ async function getCatalogState(searchParams: CatalogSearchParams) {
 export async function generateMetadata({ searchParams }: { searchParams: CatalogSearchParams }): Promise<Metadata> {
   const { page, hasFilters } = await getCatalogState(searchParams);
   const title = `AI Tools, Plans & USD Quotes${page > 1 ? ` — Page ${page}` : ""} | GetAI Tools`;
-  const description = "Explore AI tools for writing, coding, design, research, video and more. Compare what each tool does and request current plans, availability and quotes in USD.";
+  const description = page > 1 && !hasFilters
+    ? `Explore ${tools.slice((page - 1) * 10, (page - 1) * 10 + 2).map((tool) => tool.name).join(" and ")} on catalogue page ${page}. Compare tool uses, then ask GetAI Tools about available plans, access and USD quotes.`
+    : "Explore AI tools for writing, coding, design, research, video and more. Compare what each tool does and request current plans, availability and quotes in USD.";
   const canonical = getCatalogUrl({ page });
   return {
     title,
