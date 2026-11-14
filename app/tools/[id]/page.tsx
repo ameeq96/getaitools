@@ -58,12 +58,19 @@ export default async function ToolPage({ params }: ToolPageProps) {
   const categoryPath = `/categories/${getCategorySlug(tool.category)}`;
   const plans = getToolPlans(tool.id);
   const offerPlans = plans.filter((plan) => Number.isFinite(plan.priceUsd));
+  const planHeading = (plan: (typeof plans)[number]) => {
+    const sameName = plans.filter((item) => item.name === plan.name);
+    if (sameName.length < 2) return plan.name;
+    const sameDuration = sameName.filter((item) => item.duration === plan.duration);
+    if (sameDuration.length < 2) return `${plan.name} – ${plan.duration}`;
+    return sameDuration.filter((item) => item.access === plan.access).length < 2 ? `${plan.name} – ${plan.duration} – ${plan.access}` : plan.name;
+  };
   const pricingModel = getToolPricingModel(tool.id);
 
   return <>
     <BreadcrumbJsonLd items={[{ name: "AI tools", path: "/" }, { name: tool.category, path: categoryPath }, { name: tool.name, path: `/tools/${tool.id}` }]} />
     <JsonLd data={{ "@context": "https://schema.org", "@type": "WebPage", "@id": `${siteUrl}/tools/${tool.id}#webpage`, url: `${siteUrl}/tools/${tool.id}`, name: `${tool.name} features and USD quotes`, description: tool.description, inLanguage: "en", isPartOf: { "@id": `${siteUrl}/#website` }, about: { "@type": "Thing", name: tool.name, ...(content ? { sameAs: content.officialUrl } : {}) }, ...(plans.length > 0 ? { dateModified: pricingUpdatedOn } : content ? { dateModified: content.reviewedOn } : {}) }} />
-    {offerPlans.length > 0 && <JsonLd data={{ "@context": "https://schema.org", "@type": "Product", name: tool.name, description: tool.description, url: `${siteUrl}/tools/${tool.id}`, offers: offerPlans.map((plan) => ({ "@type": "Offer", name: plan.name, price: plan.priceUsd, priceCurrency: "USD" })) }} />}
+    {offerPlans.length > 0 && <JsonLd data={{ "@context": "https://schema.org", "@type": "Product", name: tool.name, description: tool.description, url: `${siteUrl}/tools/${tool.id}`, offers: offerPlans.map((plan) => ({ "@type": "Offer", name: planHeading(plan), price: plan.priceUsd, priceCurrency: "USD" })) }} />}
     <div className="announcement"><span><Sparkles size={13} /> A little upgrade. A whole lot of possibility.</span><span>Curated AI tools. All in one place. <ArrowUpRight size={12} /></span></div>
     <header className="header wrap">
       <Link href="/" className="brand-link"><Brand /></Link>
@@ -93,7 +100,7 @@ export default async function ToolPage({ params }: ToolPageProps) {
           </section>}
           {plans.length > 0 && <div className="tool-price-grid">{plans.map((plan) => <article key={plan.id}>
             <span className="tool-price-status">Confirm availability</span>
-            <h3>{plan.name}</h3>
+            <h3>{planHeading(plan)}</h3>
             <strong className="tool-price-amount">{formatUsd(plan.priceUsd)} <span>USD</span></strong>
             <p className="tool-price-term">{plan.duration}</p>
             <p className="tool-price-access">{plan.access}</p>

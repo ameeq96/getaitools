@@ -3,7 +3,7 @@ import Link from "next/link";
 import { BreadcrumbJsonLd, socialMetadata } from "../../../seo";
 
 export const metadata: Metadata = {
-  title: "ChatGPT vs Claude for Writing: Workflow & Plan Guide | GetAI Tools",
+  title: "ChatGPT vs Claude for Writing: Workflow Guide | GetAI Tools",
   description: "Compare documented ChatGPT and Claude writing uses, try the same evaluation brief, and learn what to check before choosing an AI writing plan.",
   alternates: { canonical: "/compare/chatgpt-vs-claude" },
   ...socialMetadata("ChatGPT vs Claude for Writing — GetAI Tools", "A practical guide to first drafts, revisions, human review, and plan questions for ChatGPT and Claude.", "/compare/chatgpt-vs-claude")

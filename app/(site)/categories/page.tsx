@@ -6,7 +6,7 @@ import { tools } from "../../catalog";
 import { BreadcrumbJsonLd, socialMetadata } from "../../seo";
 
 export const metadata: Metadata = {
-  title: "AI Tool Categories — Writing, Coding, Design & More | GetAI Tools",
+  title: "AI Tool Categories — Writing, Coding, Design | GetAI Tools",
   description: "Browse AI tools by category, from writing and coding to image generation, video and research. Compare workflows and request available plans in USD.",
   alternates: { canonical: "/categories" },
   ...socialMetadata("Explore AI Tool Categories | GetAI Tools", "Find AI tools for the work you want to do. Explore every category and compare the details before choosing a plan.", "/categories")

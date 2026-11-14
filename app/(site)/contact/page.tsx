@@ -6,7 +6,7 @@ import { businessEmail, emailInquiryUrl, whatsappLabel, whatsappUrl } from "../.
 import { socialMetadata } from "../../seo";
 
 export const metadata: Metadata = {
-  title: "Contact — GetAI Tools",
+  title: "Contact — WhatsApp or Email for AI Tool Plans | GetAI Tools",
   description: "Contact GetAI Tools on WhatsApp or email about AI tools, available plans, and pricing in USD.",
   alternates: { canonical: "/contact" },
   ...socialMetadata("Contact — GetAI Tools", "Contact GetAI Tools on WhatsApp or email about AI tools, available plans, and pricing in USD.", "/contact")
