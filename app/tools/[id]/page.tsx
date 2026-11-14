@@ -6,7 +6,7 @@ import { ArrowLeft, ArrowRight, ArrowUpRight, Check, ChevronRight, Layers3, Shop
 import { tools, ToolLogo, type Tool } from "../../catalog";
 import ToolActions from "./tool-actions";
 import BusinessLinks from "../../business-links";
-import { getCategorySlug } from "../../catalog-seo";
+import { comparePairs, getCategorySlug } from "../../catalog-seo";
 import { BreadcrumbJsonLd, JsonLd, siteUrl, socialMetadata } from "../../seo";
 import { toolContent } from "../../tool-content";
 import { formatUsd, getToolPlans, getToolPriceLabel, getToolPricingModel, pricingUpdatedOn } from "../../sample-plans";
@@ -31,6 +31,12 @@ export async function generateMetadata({ params }: ToolPageProps): Promise<Metad
     alternates: { canonical: `/tools/${tool.id}` },
     ...socialMetadata(`${tool.name} Features & USD Quotes | GetAI Tools`, description, `/tools/${tool.id}`)
   };
+}
+
+function getToolDefinition(tool: Tool) {
+  const category = /^[A-Z][a-z]/.test(tool.category) ? tool.category[0].toLowerCase() + tool.category.slice(1) : tool.category;
+  const maker = tool.name.toLowerCase().startsWith(tool.maker.toLowerCase()) ? "" : `, developed by ${tool.maker}`;
+  return `${tool.name} is ${category.startsWith("AI ") ? `a tool in the ${category} category` : `an AI tool for ${category}`}${maker}.`;
 }
 
 function getRelatedTools(tool: Tool) {
@@ -82,7 +88,7 @@ export default async function ToolPage({ params }: ToolPageProps) {
       <nav className="tool-breadcrumbs wrap" aria-label="Breadcrumb"><Link href="/"><ArrowLeft size={13} /> AI tools</Link><ChevronRight size={12} /><Link href={categoryPath}>{tool.category}</Link><ChevronRight size={12} /><span aria-current="page">{tool.name}</span></nav>
 
       <section className="tool-pricing-header wrap" aria-labelledby="tool-title">
-        <div className="tool-pricing-identity"><span className="tool-icon"><ToolLogo id={tool.id} /></span><div><h1 className="tool-title" id="tool-title">{tool.name}<span>.</span></h1><span className="tool-maker">{tool.category}<small>By {tool.maker}</small></span></div></div>
+        <div className="tool-pricing-identity"><span className="tool-icon"><ToolLogo id={tool.id} /></span><div><h1 className="tool-title" id="tool-title">{tool.name}<span>.</span></h1><p className="tool-description">{getToolDefinition(tool)}</p><span className="tool-maker">{tool.category}<small>By {tool.maker}</small></span></div></div>
         <div className="tool-pricing-overview" aria-label={`${tool.name} pricing in USD`}><span>USD PRICING</span><strong>{getToolPriceLabel(tool.id)}</strong>{plans.length > 0 && <small>{plans.length} {plans.length === 1 ? "plan" : "plans"} to compare</small>}</div>
       </section>
 
@@ -138,7 +144,7 @@ export default async function ToolPage({ params }: ToolPageProps) {
             <section><h2>What is {tool.name} useful for?</h2><p>{content.overview}</p><h3>Who it can suit</h3><ul>{content.bestFor.map((item) => <li key={item}>{item}</li>)}</ul></section>
             <section><h2>{content.exampleWorkflow.title}</h2><p className="tool-editorial-note">An example workflow to help you evaluate the tool. Results depend on your inputs and the plan you use.</p><ol>{content.exampleWorkflow.steps.map((step) => <li key={step}>{step}</li>)}</ol></section>
             <section><h2>Before choosing a {tool.name} plan</h2><ul>{content.considerations.map((item) => <li key={item}>{item}</li>)}</ul><p>Ask for the exact plan, included limits, access method, activation estimate, renewal, support and refund terms before payment. <Link href="/delivery">Read delivery and support information</Link>.</p></section>
-            <section className="tool-official-sources"><h2>Official information</h2><p>Product information reviewed on <time dateTime={content.reviewedOn}>{new Intl.DateTimeFormat("en", { dateStyle: "long", timeZone: "UTC" }).format(new Date(`${content.reviewedOn}T00:00:00Z`))}</time>. Features and plan details can change; check the provider’s current information.</p><ul>{content.sources.map((source) => <li key={source.url}><a href={source.url} target="_blank" rel="noopener noreferrer">{source.title} <ArrowUpRight size={13} /></a></li>)}</ul>{(tool.id === "chatgpt" || tool.id === "claude") && <p><Link href="/compare/chatgpt-vs-claude">Compare ChatGPT and Claude for writing</Link></p>}</section>
+            <section className="tool-official-sources"><h2>Official information</h2><p>Product information reviewed on <time dateTime={content.reviewedOn}>{new Intl.DateTimeFormat("en", { dateStyle: "long", timeZone: "UTC" }).format(new Date(`${content.reviewedOn}T00:00:00Z`))}</time>. Features and plan details can change; check the provider’s current information.</p><ul>{content.sources.map((source) => <li key={source.url}><a href={source.url} target="_blank" rel="noopener noreferrer">{source.title} <ArrowUpRight size={13} /></a></li>)}</ul>{(tool.id === "chatgpt" || tool.id === "claude") && <p><Link href="/compare/chatgpt-vs-claude">Compare ChatGPT and Claude for writing</Link></p>}{comparePairs.filter((pair) => pair.includes(tool.id)).map((pair) => { const [first, second] = pair.map((id) => tools.find((item) => item.id === id)!); return <p key={pair.join("-vs-")}><Link href={`/compare/${pair.join("-vs-")}`}>Compare {first.name} and {second.name} side by side</Link></p>; })}</section>
           </div>}
         </div>
 

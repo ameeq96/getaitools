@@ -2,13 +2,14 @@ import { mkdir, readFile, rename, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { tools } from "../../catalog";
-import { categoryPages } from "../../catalog-seo";
+import { categoryPages, comparePairs } from "../../catalog-seo";
 import { measurementEvents, type MeasurementEvent } from "../../inquiry-metrics";
 
 export const runtime = "nodejs";
 
 const knownPages = new Set([
   "/", "/about", "/contact", "/toolkit", "/how-it-works", "/faqs", "/delivery", "/privacy", "/terms", "/refunds", "/categories", "/compare/chatgpt-vs-claude",
+  ...comparePairs.map((pair) => "/compare/" + pair.join("-vs-")),
   ...tools.map((tool) => "/tools/" + tool.id),
   ...categoryPages.map((category) => "/categories/" + category.slug)
 ]);

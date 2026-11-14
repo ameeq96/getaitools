@@ -1,4 +1,4 @@
-import { tools, type Category } from "./catalog";
+import { tools, type Category, type ToolId } from "./catalog";
 
 type CategoryPage = {
   slug: string;
@@ -101,6 +101,8 @@ export const categoryPages: CategoryPage[] = [
     buyingGuide: ["Identify the model, region, deployment and integration requirements of your project. Check whether the platform supports the exact workflow you need.", "Distinguish a website subscription from API or infrastructure usage. Confirm account ownership, quotas, metering and any separate provider charges.", "Review data handling, access management, operational limits and monitoring. Test a small integration before moving production workloads."]
   }
 ];
+
+export const comparePairs: [ToolId, ToolId][] = [["chatgpt", "gemini"], ["claude", "gemini"], ["midjourney", "adobe-firefly"], ["canva", "adobe-express"], ["runway", "pika"], ["heygen", "synthesia"], ["cursor", "github-copilot"], ["zapier", "make"]];
 
 export function getCategorySlug(name: Category): string | undefined {
   return categoryPages.find((category) => category.name === name)?.slug;
