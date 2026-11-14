@@ -80,6 +80,15 @@ export default async function ToolPage({ params }: ToolPageProps) {
       <div className="tool-editorial tool-top-pricing wrap">
         <section className="tool-sample-plans tool-usd-plans" id="tool-pricing">
           <div className="tool-pricing-section-heading"><div><span className="eyebrow">PLANS &amp; PRICING</span><h2>{plans.length ? "Choose your plan" : pricingModel ? `${tool.name} pricing` : "Request pricing"}</h2><p>{plans.length ? "USD prices cover the duration shown. Fees and taxes are itemized at checkout. Confirm availability and access before payment." : pricingModel?.description || `Contact us for available ${tool.name} plans, duration, access details and a USD quote.`}</p></div>{plans.length > 0 && <p className="tool-pricing-updated">Updated <time dateTime={pricingUpdatedOn}>{new Intl.DateTimeFormat("en", { dateStyle: "long", timeZone: "UTC" }).format(new Date(`${pricingUpdatedOn}T00:00:00Z`))}</time></p>}</div>
+          {plans.length > 0 && <section aria-label="Compare access types before choosing">
+            <h3>Compare access before price</h3>
+            <ul>
+              <li><strong>Personal or private:</strong> confirm who owns the account, the included tier and who handles renewal.</li>
+              <li><strong>Shared access:</strong> check who can use it and the card's device, location and usage restrictions.</li>
+              <li><strong>Third-party portal or gateway:</strong> check the named platform and credit allowance; do not assume it includes the provider's own paid account.</li>
+            </ul>
+            <p>Offer labels do not confirm current availability. Confirm your country, access method and applicable terms before checkout.</p>
+          </section>}
           {plans.length > 0 && <div className="tool-price-grid">{plans.map((plan) => <article key={plan.id}>
             <span className="tool-price-status">Confirm availability</span>
             <h3>{plan.name}</h3>
