@@ -57,11 +57,13 @@ export default async function ToolPage({ params }: ToolPageProps) {
   const content = toolContent[tool.id];
   const categoryPath = `/categories/${getCategorySlug(tool.category)}`;
   const plans = getToolPlans(tool.id);
+  const offerPlans = plans.filter((plan) => Number.isFinite(plan.priceUsd));
   const pricingModel = getToolPricingModel(tool.id);
 
   return <>
     <BreadcrumbJsonLd items={[{ name: "AI tools", path: "/" }, { name: tool.category, path: categoryPath }, { name: tool.name, path: `/tools/${tool.id}` }]} />
-    <JsonLd data={{ "@context": "https://schema.org", "@type": "WebPage", "@id": `${siteUrl}/tools/${tool.id}#webpage`, url: `${siteUrl}/tools/${tool.id}`, name: `${tool.name} features and USD quotes`, description: tool.description, inLanguage: "en", isPartOf: { "@id": `${siteUrl}/#website` }, about: { "@type": "Thing", name: tool.name, ...(content ? { sameAs: content.officialUrl } : {}) }, ...(content ? { dateModified: content.reviewedOn } : {}) }} />
+    <JsonLd data={{ "@context": "https://schema.org", "@type": "WebPage", "@id": `${siteUrl}/tools/${tool.id}#webpage`, url: `${siteUrl}/tools/${tool.id}`, name: `${tool.name} features and USD quotes`, description: tool.description, inLanguage: "en", isPartOf: { "@id": `${siteUrl}/#website` }, about: { "@type": "Thing", name: tool.name, ...(content ? { sameAs: content.officialUrl } : {}) }, ...(plans.length > 0 ? { dateModified: pricingUpdatedOn } : content ? { dateModified: content.reviewedOn } : {}) }} />
+    {offerPlans.length > 0 && <JsonLd data={{ "@context": "https://schema.org", "@type": "Product", name: tool.name, description: tool.description, url: `${siteUrl}/tools/${tool.id}`, offers: offerPlans.map((plan) => ({ "@type": "Offer", name: plan.name, price: plan.priceUsd, priceCurrency: "USD" })) }} />}
     <div className="announcement"><span><Sparkles size={13} /> A little upgrade. A whole lot of possibility.</span><span>Curated AI tools. All in one place. <ArrowUpRight size={12} /></span></div>
     <header className="header wrap">
       <Link href="/" className="brand-link"><Brand /></Link>
